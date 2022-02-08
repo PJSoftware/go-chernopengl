@@ -37,3 +37,5 @@ First, however, we need to add it to our project:
 ```sh
 go get github.com/go-gl/gl/v4.1-core/gl
 ```
+
+Except ... the Legacy code does not seem to be supported by 4.1, so we need to remove it again.
