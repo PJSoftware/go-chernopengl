@@ -3,6 +3,7 @@ package main
 import (
 	"runtime"
 
+	"github.com/go-gl/gl/v4.1-compatibility/gl"
 	"github.com/go-gl/glfw/v3.3/glfw"
 )
 
@@ -27,7 +28,14 @@ func main() {
 	window.MakeContextCurrent()
 
 	for !window.ShouldClose() {
-		// Do OpenGL stuff.
+
+		gl.Clear(gl.COLOR_BUFFER_BIT)
+		gl.Begin(gl.TRIANGLES)
+		gl.Vertex2f(-0.5, 0.5)
+		gl.Vertex2f(0.0, -0.5)
+		gl.Vertex2f(0.5, -0.5)
+		gl.End()
+
 		window.SwapBuffers()
 		glfw.PollEvents()
 	}

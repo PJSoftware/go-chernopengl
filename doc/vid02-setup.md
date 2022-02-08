@@ -28,6 +28,12 @@ go get -u github.com/go-gl/glfw/v3.3/glfw
 
 This actually seems rather simpler than achieving the same task in `Visual Studio`, for a `C++` project.
 
-## Setting Up OpenGL
+## Legacy OpenGL
 
-## Opening a Window
+We would not ordinarily use Legacy OpenGL in production code, but we use it here to test that everything is working.
+
+First, however, we need to add it to our project:
+
+```sh
+go get github.com/go-gl/gl/v4.1-core/gl
+```
