@@ -35,14 +35,22 @@ func main() {
 	}
 	log.Println(gl.VERSION)
 	
+	floatSize := 4	// a float32 is 32 bits, or 4 bytes, in size
+	positions := []float32{ // use a slice
+		-0.5, 0.5,
+		0.0, -0.5,
+		0.5, -0.5,
+	}
+
+	// Create our buffer
+	var buffer uint32
+	gl.GenBuffers(1, &buffer);
+	gl.BindBuffer(gl.ARRAY_BUFFER, buffer)
+	gl.BufferData(gl.ARRAY_BUFFER, len(positions) * floatSize, gl.Ptr(positions), gl.STATIC_DRAW)
+
 	for !window.ShouldClose() {
 
-		// gl.Clear(gl.COLOR_BUFFER_BIT)
-		// gl.Begin(gl.TRIANGLES)
-		// gl.Vertex2f(-0.5, 0.5)
-		// gl.Vertex2f(0.0, -0.5)
-		// gl.Vertex2f(0.5, -0.5)
-		// gl.End()
+		gl.DrawArrays(gl.TRIANGLES, 0, 3)
 
 		window.SwapBuffers()
 		glfw.PollEvents()

@@ -1,3 +1,11 @@
 {
-  "cSpell.words": ["Cherno", "chernopengl", "GLEW", "glfw", "initialise"]
+  "cSpell.words": [
+    "Cherno",
+    "chernopengl",
+    "GLEW",
+    "glfw",
+    "initialise",
+    "opengl",
+    "vbuf"
+  ]
 }
