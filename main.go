@@ -1,8 +1,10 @@
 package main
 
 import (
+	"log"
 	"runtime"
 
+	"github.com/go-gl/gl/v4.1-core/gl"
 	"github.com/go-gl/glfw/v3.3/glfw"
 )
 
@@ -26,6 +28,13 @@ func main() {
 
 	window.MakeContextCurrent()
 
+	// Important! Call gl.Init only under the presence of an active OpenGL context,
+	// i.e., after MakeContextCurrent.
+	if err := gl.Init(); err != nil {
+		log.Fatalln(err)
+	}
+	log.Println(gl.VERSION)
+	
 	for !window.ShouldClose() {
 
 		// gl.Clear(gl.COLOR_BUFFER_BIT)
