@@ -48,6 +48,12 @@ func main() {
 	gl.BindBuffer(gl.ARRAY_BUFFER, buffer)
 	gl.BufferData(gl.ARRAY_BUFFER, len(positions) * floatSize, gl.Ptr(positions), gl.STATIC_DRAW)
 
+	// this must be called _after_ gl.BindBuffer()
+	var vertexIndex uint32 = 0
+	var floatsPerAttrib int32 = 2
+	gl.EnableVertexAttribArray(vertexIndex)
+	gl.VertexAttribPointer(vertexIndex, floatsPerAttrib, gl.FLOAT, false, floatsPerAttrib * int32(floatSize), gl.Ptr(0))
+
 	for !window.ShouldClose() {
 
 		gl.DrawArrays(gl.TRIANGLES, 0, 3)
