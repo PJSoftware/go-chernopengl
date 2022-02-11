@@ -44,7 +44,8 @@ func main() {
 
 	// Create our buffer
 	var buffer uint32
-	gl.GenBuffers(1, &buffer);
+	var numBuffers int32 = 1
+	gl.GenBuffers(numBuffers, &buffer);
 	gl.BindBuffer(gl.ARRAY_BUFFER, buffer)
 	gl.BufferData(gl.ARRAY_BUFFER, len(positions) * floatSize, gl.Ptr(positions), gl.STATIC_DRAW)
 
