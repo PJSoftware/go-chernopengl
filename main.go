@@ -37,14 +37,15 @@ func main() {
 	
 	floatSize := 4	// a float32 is 32 bits, or 4 bytes, in size
 	positions := []float32{ // use a slice
-		-0.5, 0.5,
-		0.0, -0.5,
-		0.5, -0.5,
+		 0.0,  0.5,
+		-0.5, -0.5,
+		 0.5, -0.5,
 	}
 
 	// Create our buffer
 	var buffer uint32
-	gl.GenBuffers(1, &buffer);
+	var numBuffers int32 = 1
+	gl.GenBuffers(numBuffers, &buffer);
 	gl.BindBuffer(gl.ARRAY_BUFFER, buffer)
 	gl.BufferData(gl.ARRAY_BUFFER, len(positions) * floatSize, gl.Ptr(positions), gl.STATIC_DRAW)
 
@@ -52,7 +53,7 @@ func main() {
 	var vertexIndex uint32 = 0
 	var floatsPerAttrib int32 = 2
 	gl.EnableVertexAttribArray(vertexIndex)
-	gl.VertexAttribPointer(vertexIndex, floatsPerAttrib, gl.FLOAT, false, floatsPerAttrib * int32(floatSize), gl.Ptr(0))
+	gl.VertexAttribPointer(vertexIndex, floatsPerAttrib, gl.FLOAT, false, floatsPerAttrib * int32(floatSize), nil)
 
 	for !window.ShouldClose() {
 

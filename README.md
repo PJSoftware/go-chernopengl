@@ -16,3 +16,4 @@ Additionally, check out:
 - Using Modern OpenGL in ~~C++~~ Go ([doc](doc/vid03-modern-opengl.md)) ([video](https://www.youtube.com/watch?v=H2E3yO0J7TM&list=PLlrATfBNZ98foTJPJ_Ev03o2oq3-GGOS2&index=3))
 - Vertex Buffers & Drawing a Triangle ([doc](doc/vid04-vbuf-triangle.md)) ([video](https://www.youtube.com/watch?v=0p9VxImr7Y0&list=PLlrATfBNZ98foTJPJ_Ev03o2oq3-GGOS2&index=4))
 - Vertex Attributes and Layouts ([doc](doc/vid05-vertex-stuff.md)) ([video](https://www.youtube.com/watch?v=x0H--CL2tUI&list=PLlrATfBNZ98foTJPJ_Ev03o2oq3-GGOS2&index=5))
+- How Shaders Work in OpenGL ([doc](doc/vid06-shaders.md)) ([video](https://www.youtube.com/watch?v=5W7JLgFCkwI&list=PLlrATfBNZ98foTJPJ_Ev03o2oq3-GGOS2&index=6))
