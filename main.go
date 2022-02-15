@@ -57,6 +57,7 @@ func main() {
 
 	for !window.ShouldClose() {
 
+		gl.Clear(gl.COLOR_BUFFER_BIT)
 		gl.DrawArrays(gl.TRIANGLES, 0, 3)
 
 		window.SwapBuffers()
