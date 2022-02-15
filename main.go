@@ -1,9 +1,11 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"os"
 	"runtime"
+	"strings"
 
 	"github.com/go-gl/gl/v4.1-core/gl"
 	"github.com/go-gl/glfw/v3.3/glfw"
@@ -23,25 +25,46 @@ func importShader(shaderFile string) string {
 	return string(content) + "\x00" // shader string must be null-terminated to compile
 }
 
-func compileShader(shaderType uint32, sourceFile string) uint32 {
+func compileShader(shaderType uint32, sourceFile string) (uint32, error) {
 	shaderId := gl.CreateShader(shaderType)
 	
 	source := importShader(sourceFile)
 	sourcePtr, free := gl.Strs(source)
 	gl.ShaderSource(shaderId, 1, sourcePtr, nil)
 	free()
-
-	// TODO: Error handling
-
 	gl.CompileShader(shaderId)
-	return shaderId
+
+	// Error handling
+	var status int32
+	gl.GetShaderiv(shaderId, gl.COMPILE_STATUS, &status)
+
+	if status == gl.FALSE {
+		var logLength int32
+		gl.GetShaderiv(shaderId, gl.INFO_LOG_LENGTH, &logLength)
+		message := strings.Repeat("\x00", int(logLength+1))
+		gl.GetShaderInfoLog(shaderId, logLength, &logLength, gl.Str(message))
+
+		// standard Go would return an error here, but for this tutorial
+		// we shall simply print it out instead
+		gl.DeleteShader(shaderId)
+		return 0, fmt.Errorf("shader '%v' has not compiled: %v", sourceFile, message)
+	}
+
+	return shaderId, nil
 }
 
 func createShaders(vertexShaderFile string, fragmentShaderFile string) uint32 {
 	programId := gl.CreateProgram()
 
-	vsId := compileShader(gl.VERTEX_SHADER, vertexShaderFile)
-	fsId := compileShader(gl.FRAGMENT_SHADER, fragmentShaderFile)
+	vsId, err := compileShader(gl.VERTEX_SHADER, vertexShaderFile)
+	if err != nil {
+		panic(err)
+	}
+
+	fsId, err := compileShader(gl.FRAGMENT_SHADER, fragmentShaderFile)
+	if err != nil {
+		panic(err)
+	}
 	
 	gl.AttachShader(programId, vsId)
 	gl.AttachShader(programId, fsId)
@@ -95,6 +118,9 @@ func main() {
 	var floatsPerAttrib int32 = 2
 	gl.EnableVertexAttribArray(vertexIndex)
 	gl.VertexAttribPointer(vertexIndex, floatsPerAttrib, gl.FLOAT, false, floatsPerAttrib * int32(floatSize), nil)
+
+	shader := createShaders("vertexShader", "fragmentShader")
+	gl.UseProgram(shader)
 
 	for !window.ShouldClose() {
 
