@@ -2,6 +2,7 @@ package main
 
 import (
 	"log"
+	"os"
 	"runtime"
 
 	"github.com/go-gl/gl/v4.1-core/gl"
@@ -12,6 +13,46 @@ func init() {
 	// This is needed to arrange that main() runs on main thread.
 	// See documentation for functions that are only allowed to be called from the main thread.
 	runtime.LockOSThread()
+}
+
+func importShader(shaderFile string) string {
+	content, err := os.ReadFile("shaders/" + shaderFile + ".glsl")
+	if err != nil {
+		log.Fatal(err)
+	}
+	return string(content) + "\x00" // shader string must be null-terminated to compile
+}
+
+func compileShader(shaderType uint32, sourceFile string) uint32 {
+	shaderId := gl.CreateShader(shaderType)
+	
+	source := importShader(sourceFile)
+	sourcePtr, free := gl.Strs(source)
+	gl.ShaderSource(shaderId, 1, sourcePtr, nil)
+	free()
+
+	// TODO: Error handling
+
+	gl.CompileShader(shaderId)
+	return shaderId
+}
+
+func createShaders(vertexShaderFile string, fragmentShaderFile string) uint32 {
+	programId := gl.CreateProgram()
+
+	vsId := compileShader(gl.VERTEX_SHADER, vertexShaderFile)
+	fsId := compileShader(gl.FRAGMENT_SHADER, fragmentShaderFile)
+	
+	gl.AttachShader(programId, vsId)
+	gl.AttachShader(programId, fsId)
+	gl.LinkProgram(programId)
+	gl.ValidateProgram(programId)
+
+	// Once linked, the standalone shaders can be safely deleted
+	gl.DeleteShader(vsId)
+	gl.DeleteShader(fsId)
+
+	return programId
 }
 
 func main() {

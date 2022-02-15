@@ -4,9 +4,11 @@
     "chernopengl",
     "GLEW",
     "glfw",
+    "glsl",
     "initialise",
     "opengl",
     "Optimisation",
+    "Strs",
     "vbuf"
   ]
 }
