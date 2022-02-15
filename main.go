@@ -130,4 +130,6 @@ func main() {
 		window.SwapBuffers()
 		glfw.PollEvents()
 	}
+
+	gl.DeleteProgram(shader)
 }
