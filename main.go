@@ -158,9 +158,13 @@ func main() {
 	
 	floatSize := 4	// a float32 is 32 bits, or 4 bytes, in size
 	positions := []float32{ // use a slice
-		 0.0,  0.5,
+		-0.5,  0.5,
 		-0.5, -0.5,
 		 0.5, -0.5,
+		
+		 0.5, -0.5,
+		 0.5,  0.5,
+		-0.5,  0.5,
 	}
 
 	// Create our buffer
@@ -183,7 +187,7 @@ func main() {
 	for !window.ShouldClose() {
 
 		gl.Clear(gl.COLOR_BUFFER_BIT)
-		gl.DrawArrays(gl.TRIANGLES, 0, 3)
+		gl.DrawArrays(gl.TRIANGLES, 0, 3 * 2)
 
 		window.SwapBuffers()
 		glfw.PollEvents()
