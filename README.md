@@ -19,3 +19,4 @@ Additionally, check out:
 - How Shaders Work in OpenGL ([doc](doc/vid06-shaders.md)) ([video](https://www.youtube.com/watch?v=5W7JLgFCkwI&list=PLlrATfBNZ98foTJPJ_Ev03o2oq3-GGOS2&index=6))
 - Writing a Shader ([doc](doc/vid07-writing-shaders.md)) ([video](https://www.youtube.com/watch?v=71BLZwRGUJE&list=PLlrATfBNZ98foTJPJ_Ev03o2oq3-GGOS2&index=7))
 - Dealing with Shaders ([doc](doc/vid08-dealing-with-shaders.md)) ([video](https://www.youtube.com/watch?v=2pv0Fbo-7ms&list=PLlrATfBNZ98foTJPJ_Ev03o2oq3-GGOS2&index=8))
+- Index Buffers in OpenGL ([doc](doc/vid09-index-buffers.md)) ([video](https://www.youtube.com/watch?v=MXNMC1YAxVQ&list=PLlrATfBNZ98foTJPJ_Ev03o2oq3-GGOS2&index=9))
