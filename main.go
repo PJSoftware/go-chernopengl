@@ -142,7 +142,7 @@ func main() {
 	}
 	defer glfw.Terminate()
 
-	window, err := glfw.CreateWindow(640, 480, "Hello World", nil, nil)
+	window, err := glfw.CreateWindow(640, 480, "Draw a Square", nil, nil)
 	if err != nil {
 		panic(err)
 	}
@@ -158,13 +158,13 @@ func main() {
 	
 	floatSize := 4	// a float32 is 32 bits, or 4 bytes, in size
 	positions := []float32{ // use a slice
-		-0.5,  0.5,
-		-0.5, -0.5,
-		 0.5, -0.5,
+		-0.5,  0.5,		// vert TL
+		-0.5, -0.5,		// vert BL
+		 0.5, -0.5,		// vert BR
 		
-		 0.5, -0.5,
-		 0.5,  0.5,
-		-0.5,  0.5,
+		 0.5, -0.5,		// vert BR
+		 0.5,  0.5,		// vert TR
+		-0.5,  0.5,		// vert TL
 	}
 
 	// Create our buffer
