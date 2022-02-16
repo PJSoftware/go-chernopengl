@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bufio"
 	"fmt"
 	"log"
 	"os"
@@ -11,25 +12,81 @@ import (
 	"github.com/go-gl/glfw/v3.3/glfw"
 )
 
+type ShaderData struct {
+	Source string
+	File string
+	Type uint32
+	Name string
+}
+
+type ShaderParserData struct {
+	VertexShader ShaderData
+	FragmentShader ShaderData
+}
+
 func init() {
 	// This is needed to arrange that main() runs on main thread.
 	// See documentation for functions that are only allowed to be called from the main thread.
 	runtime.LockOSThread()
 }
 
-func importShader(shaderFile string) string {
-	content, err := os.ReadFile("shaders/" + shaderFile + ".glsl")
+func parseShader(shaderFile string) ShaderParserData {
+	type ShaderType int
+	const (
+		None 			ShaderType = -1
+		Vertex 		ShaderType = 0
+		Fragment 	ShaderType = 1
+	)
+	const shaderPath = "res/shaders"
+
+	file, err := os.Open(shaderPath + "/" + shaderFile)
 	if err != nil {
-		log.Fatal(err)
+			log.Fatal(err)
 	}
-	return string(content) + "\x00" // shader string must be null-terminated to compile
+	defer file.Close()
+
+	var shader [2]ShaderData
+	currentType := None
+
+	scanner := bufio.NewScanner(file)
+	for scanner.Scan() {
+		line := scanner.Text()
+		if line == "// shader: vertex" {
+			currentType = Vertex
+			shader[currentType].File = shaderFile
+			shader[currentType].Name = "Vertex"
+			shader[currentType].Type = gl.VERTEX_SHADER
+			shader[currentType].Source = ""
+		} else if line == "// shader: fragment" {
+			currentType = Fragment
+			shader[currentType].File = shaderFile
+			shader[currentType].Name = "Fragment"
+			shader[currentType].Type = gl.FRAGMENT_SHADER
+			shader[currentType].Source = ""
+		} else {
+			if currentType != None {
+				shader[currentType].Source += line + "\n"
+			}
+		}
+	}
+
+	if err := scanner.Err(); err != nil {
+			log.Fatal(err)
+	}
+
+	shader[Vertex].Source += "\x00"
+	shader[Fragment].Source += "\x00"
+
+	var shaders ShaderParserData
+	shaders.VertexShader = shader[Vertex]
+	shaders.FragmentShader = shader[Fragment]
+	return shaders
 }
 
-func compileShader(shaderType uint32, sourceFile string) (uint32, error) {
-	shaderId := gl.CreateShader(shaderType)
+func compileShader(shader ShaderData) (uint32, error) {
+	shaderId := gl.CreateShader(shader.Type)
 	
-	source := importShader(sourceFile)
-	sourcePtr, free := gl.Strs(source)
+	sourcePtr, free := gl.Strs(shader.Source)
 	gl.ShaderSource(shaderId, 1, sourcePtr, nil)
 	free()
 	gl.CompileShader(shaderId)
@@ -47,21 +104,21 @@ func compileShader(shaderType uint32, sourceFile string) (uint32, error) {
 		// standard Go would return an error here, but for this tutorial
 		// we shall simply print it out instead
 		gl.DeleteShader(shaderId)
-		return 0, fmt.Errorf("shader '%v' has not compiled: %v", sourceFile, message)
+		return 0, fmt.Errorf("shader '%s' in %s has not compiled: %v", shader.Name, shader.File, message)
 	}
 
 	return shaderId, nil
 }
 
-func createShaders(vertexShaderFile string, fragmentShaderFile string) uint32 {
+func createShaders(shaderSource ShaderParserData) uint32 {
 	programId := gl.CreateProgram()
 
-	vsId, err := compileShader(gl.VERTEX_SHADER, vertexShaderFile)
+	vsId, err := compileShader(shaderSource.VertexShader)
 	if err != nil {
 		panic(err)
 	}
 
-	fsId, err := compileShader(gl.FRAGMENT_SHADER, fragmentShaderFile)
+	fsId, err := compileShader(shaderSource.FragmentShader)
 	if err != nil {
 		panic(err)
 	}
@@ -119,7 +176,8 @@ func main() {
 	gl.EnableVertexAttribArray(vertexIndex)
 	gl.VertexAttribPointer(vertexIndex, floatsPerAttrib, gl.FLOAT, false, floatsPerAttrib * int32(floatSize), nil)
 
-	shader := createShaders("vertexShader", "fragmentShader")
+	shaderSource := parseShader("basic.shader")
+	shader := createShaders(shaderSource)
 	gl.UseProgram(shader)
 
 	for !window.ShouldClose() {

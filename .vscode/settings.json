@@ -8,6 +8,7 @@
     "initialise",
     "opengl",
     "Optimisation",
+    "shadertype",
     "Strs",
     "vbuf"
   ]
