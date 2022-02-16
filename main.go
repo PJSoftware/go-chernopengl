@@ -158,20 +158,23 @@ func main() {
 	
 	floatSize := 4	// a float32 is 32 bits, or 4 bytes, in size
 	positions := []float32{ // use a slice
-		-0.5,  0.5,		// vert TL
-		-0.5, -0.5,		// vert BL
-		 0.5, -0.5,		// vert BR
-		
-		 0.5, -0.5,		// vert BR
-		 0.5,  0.5,		// vert TR
-		-0.5,  0.5,		// vert TL
+		-0.5,  0.5,		// vert TL - index 0
+		-0.5, -0.5,		// vert BL - index 1
+		 0.5, -0.5,		// vert BR - index 2
+		 0.5,  0.5,		// vert TR - index 3
 	}
 
-	// Create our buffer
-	var buffer uint32
-	var numBuffers int32 = 1
-	gl.GenBuffers(numBuffers, &buffer);
-	gl.BindBuffer(gl.ARRAY_BUFFER, buffer)
+	intSize := 4	// a uint32 is 32 bits
+	indices := []uint32{
+		0, 1, 2,
+		2, 3, 0,
+	}
+
+	// Create our vertex buffer
+	var vertexBuffer uint32
+	var numVBuffers int32 = 1
+	gl.GenBuffers(numVBuffers, &vertexBuffer);
+	gl.BindBuffer(gl.ARRAY_BUFFER, vertexBuffer)
 	gl.BufferData(gl.ARRAY_BUFFER, len(positions) * floatSize, gl.Ptr(positions), gl.STATIC_DRAW)
 
 	// this must be called _after_ gl.BindBuffer()
@@ -180,6 +183,13 @@ func main() {
 	gl.EnableVertexAttribArray(vertexIndex)
 	gl.VertexAttribPointer(vertexIndex, floatsPerAttrib, gl.FLOAT, false, floatsPerAttrib * int32(floatSize), nil)
 
+	// Create our index indexBuffer
+	var indexBuffer uint32
+	var numIBuffers int32 = 1
+	gl.GenBuffers(numIBuffers, &indexBuffer);
+	gl.BindBuffer(gl.ELEMENT_ARRAY_BUFFER, indexBuffer)
+	gl.BufferData(gl.ELEMENT_ARRAY_BUFFER, len(indices) * intSize, gl.Ptr(indices), gl.STATIC_DRAW)
+	
 	shaderSource := parseShader("basic.shader")
 	shader := createShaders(shaderSource)
 	gl.UseProgram(shader)
@@ -187,7 +197,7 @@ func main() {
 	for !window.ShouldClose() {
 
 		gl.Clear(gl.COLOR_BUFFER_BIT)
-		gl.DrawArrays(gl.TRIANGLES, 0, 3 * 2)
+		gl.DrawElements(gl.TRIANGLES, 6, gl.UNSIGNED_INT, nil)
 
 		window.SwapBuffers()
 		glfw.PollEvents()

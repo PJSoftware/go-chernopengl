@@ -20,7 +20,7 @@ It can include:
 - texture coordinates
 - normals
 - colours
-- bi-normals (or binomials??)
+- bi-normals
 - tangents
 - etc
 
