@@ -161,6 +161,11 @@ func main() {
 	}
 	defer glfw.Terminate()
 
+	glfw.WindowHint(glfw.ContextVersionMajor, 3)
+	glfw.WindowHint(glfw.ContextVersionMinor, 3)
+	glfw.WindowHint(glfw.OpenGLProfile, glfw.OpenGLCompatProfile)
+	// glfw.WindowHint(glfw.OpenGLProfile, glfw.OpenGLCoreProfile)
+
 	window, err := glfw.CreateWindow(640, 480, "Draw a Square: Error", nil, nil)
 	if err != nil {
 		panic(err)
@@ -189,6 +194,11 @@ func main() {
 		0, 1, 2,
 		2, 3, 0,
 	}
+
+	// Create our vertex array object
+	var vao uint32
+	gl.GenVertexArrays(1, &vao)
+	gl.BindVertexArray(vao)
 
 	// Create our vertex buffer
 	var vertexBuffer uint32
@@ -219,14 +229,23 @@ func main() {
 		panic("Could not locate uniform 'u_Colour'")
 	}
 
+	gl.BindVertexArray(0)
+	gl.UseProgram(0)
+	gl.BindBuffer(gl.ARRAY_BUFFER, 0)
+	gl.BindBuffer(gl.ELEMENT_ARRAY_BUFFER, 0)
+
 	var r float32 = 0.0
 	var increment float32 = 0.02
 	for !window.ShouldClose() {
 		
 		gl.Clear(gl.COLOR_BUFFER_BIT)
 		
+		gl.UseProgram(shader)
 		gl.Uniform4f(location, r, 0.1, 0.1, 1.0)
 
+		gl.BindVertexArray(vao)
+		gl.BindBuffer(gl.ELEMENT_ARRAY_BUFFER, indexBuffer)
+	
 		glClearError()
 		gl.DrawElements(gl.TRIANGLES, 6, gl.UNSIGNED_INT, nil)
 		glPanicOnError()
