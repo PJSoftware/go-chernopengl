@@ -1,4 +1,4 @@
-module www.github.com/PJSoftware/go-chernopengl
+module github.com/PJSoftware/go-chernopengl
 
 go 1.17
 
