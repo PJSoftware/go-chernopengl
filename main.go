@@ -219,14 +219,23 @@ func main() {
 		panic("Could not locate uniform 'u_Colour'")
 	}
 
+	gl.UseProgram(0)
+	gl.BindBuffer(gl.ARRAY_BUFFER, 0)
+	gl.BindBuffer(gl.ELEMENT_ARRAY_BUFFER, 0)
+
 	var r float32 = 0.0
 	var increment float32 = 0.02
 	for !window.ShouldClose() {
 		
 		gl.Clear(gl.COLOR_BUFFER_BIT)
 		
+		gl.UseProgram(shader)
 		gl.Uniform4f(location, r, 0.1, 0.1, 1.0)
-
+		gl.BindBuffer(gl.ARRAY_BUFFER, vertexBuffer)
+		gl.EnableVertexAttribArray(vertexIndex)
+		gl.VertexAttribPointer(vertexIndex, floatsPerAttrib, gl.FLOAT, false, floatsPerAttrib * int32(floatSize), nil)
+		gl.BindBuffer(gl.ELEMENT_ARRAY_BUFFER, indexBuffer)
+	
 		glClearError()
 		gl.DrawElements(gl.TRIANGLES, 6, gl.UNSIGNED_INT, nil)
 		glPanicOnError()
