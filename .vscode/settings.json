@@ -10,6 +10,7 @@
     "Optimisation",
     "shadertype",
     "Strs",
-    "vbuf"
+    "vbuf",
+    "vsync"
   ]
 }

@@ -167,6 +167,7 @@ func main() {
 	}
 
 	window.MakeContextCurrent()
+	glfw.SwapInterval(1) // enable vsync
 
 	// Important! Call gl.Init only under the presence of an active OpenGL context,
 	// i.e., after MakeContextCurrent.
@@ -213,16 +214,32 @@ func main() {
 	shader := createShaders(shaderSource)
 	gl.UseProgram(shader)
 
-	for !window.ShouldClose() {
+	location := gl.GetUniformLocation(shader, gl.Str("u_Colour" + "\x00"))
+	if (location == -1) {
+		panic("Could not locate uniform 'u_Colour'")
+	}
 
+	var r float32 = 0.0
+	var increment float32 = 0.02
+	for !window.ShouldClose() {
+		
 		gl.Clear(gl.COLOR_BUFFER_BIT)
+		
+		gl.Uniform4f(location, r, 0.1, 0.1, 1.0)
 
 		glClearError()
 		gl.DrawElements(gl.TRIANGLES, 6, gl.UNSIGNED_INT, nil)
 		glPanicOnError()
-
+		
 		window.SwapBuffers()
 		glfw.PollEvents()
+
+		if r >= 1.0 {
+			increment = -0.02
+		} else if r <= 0.0 {
+			increment = 0.02
+		} 
+		r += increment
 	}
 
 	gl.DeleteProgram(shader)
