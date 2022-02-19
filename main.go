@@ -161,6 +161,11 @@ func main() {
 	}
 	defer glfw.Terminate()
 
+	glfw.WindowHint(glfw.ContextVersionMajor, 3)
+	glfw.WindowHint(glfw.ContextVersionMinor, 3)
+	glfw.WindowHint(glfw.OpenGLProfile, glfw.OpenGLCompatProfile)
+	// glfw.WindowHint(glfw.OpenGLProfile, glfw.OpenGLCoreProfile)
+
 	window, err := glfw.CreateWindow(640, 480, "Draw a Square: Error", nil, nil)
 	if err != nil {
 		panic(err)
