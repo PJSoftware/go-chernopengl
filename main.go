@@ -24,6 +24,25 @@ type ShaderParserData struct {
 	FragmentShader ShaderData
 }
 
+func glClearError() {
+	for gl.GetError() != gl.NO_ERROR {}
+}
+
+func glPanicOnError() {
+	errorOccurred := false
+
+	for {
+		glError := gl.GetError()
+		if glError == gl.NO_ERROR { break }
+		log.Println(fmt.Sprintf("OpenGL Error #%d", glError))
+		errorOccurred = true
+	}
+
+	if errorOccurred {
+		panic("OpenGL Error(s) detected")
+	}
+}
+
 func init() {
 	// This is needed to arrange that main() runs on main thread.
 	// See documentation for functions that are only allowed to be called from the main thread.
@@ -142,7 +161,7 @@ func main() {
 	}
 	defer glfw.Terminate()
 
-	window, err := glfw.CreateWindow(640, 480, "Draw a Square", nil, nil)
+	window, err := glfw.CreateWindow(640, 480, "Draw a Square: Error", nil, nil)
 	if err != nil {
 		panic(err)
 	}
@@ -197,7 +216,10 @@ func main() {
 	for !window.ShouldClose() {
 
 		gl.Clear(gl.COLOR_BUFFER_BIT)
+
+		glClearError()
 		gl.DrawElements(gl.TRIANGLES, 6, gl.UNSIGNED_INT, nil)
+		glPanicOnError()
 
 		window.SwapBuffers()
 		glfw.PollEvents()
