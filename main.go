@@ -8,6 +8,9 @@ import (
 	"runtime"
 	"strings"
 
+	"github.com/PJSoftware/go-chernopengl/indexBuffer"
+	"github.com/PJSoftware/go-chernopengl/renderer"
+	"github.com/PJSoftware/go-chernopengl/vertexBuffer"
 	"github.com/go-gl/gl/v4.1-core/gl"
 	"github.com/go-gl/glfw/v3.3/glfw"
 )
@@ -22,25 +25,6 @@ type ShaderData struct {
 type ShaderParserData struct {
 	VertexShader ShaderData
 	FragmentShader ShaderData
-}
-
-func glClearError() {
-	for gl.GetError() != gl.NO_ERROR {}
-}
-
-func glPanicOnError() {
-	errorOccurred := false
-
-	for {
-		glError := gl.GetError()
-		if glError == gl.NO_ERROR { break }
-		log.Println(fmt.Sprintf("OpenGL Error #%d", glError))
-		errorOccurred = true
-	}
-
-	if errorOccurred {
-		panic("OpenGL Error(s) detected")
-	}
 }
 
 func init() {
@@ -166,7 +150,7 @@ func main() {
 	glfw.WindowHint(glfw.OpenGLProfile, glfw.OpenGLCompatProfile)
 	// glfw.WindowHint(glfw.OpenGLProfile, glfw.OpenGLCoreProfile)
 
-	window, err := glfw.CreateWindow(640, 480, "Draw a Square: Error", nil, nil)
+	window, err := glfw.CreateWindow(640, 480, "Draw a Square: Abstracting", nil, nil)
 	if err != nil {
 		panic(err)
 	}
@@ -179,9 +163,9 @@ func main() {
 	if err := gl.Init(); err != nil {
 		log.Fatalln(err)
 	}
-	log.Println(gl.VERSION)
+	log.Println(fmt.Sprintf("Initialise OpenGL version %d", gl.VERSION))
 	
-	floatSize := 4	// a float32 is 32 bits, or 4 bytes, in size
+	floatInBytes := 4	// a float32 is 32 bits, or 4 bytes, in size
 	positions := []float32{ // use a slice
 		-0.5,  0.5,		// vert TL - index 0
 		-0.5, -0.5,		// vert BL - index 1
@@ -189,7 +173,6 @@ func main() {
 		 0.5,  0.5,		// vert TR - index 3
 	}
 
-	intSize := 4	// a uint32 is 32 bits
 	indices := []uint32{
 		0, 1, 2,
 		2, 3, 0,
@@ -200,26 +183,21 @@ func main() {
 	gl.GenVertexArrays(1, &vao)
 	gl.BindVertexArray(vao)
 
-	// Create our vertex buffer
-	var vertexBuffer uint32
-	var numVBuffers int32 = 1
-	gl.GenBuffers(numVBuffers, &vertexBuffer);
-	gl.BindBuffer(gl.ARRAY_BUFFER, vertexBuffer)
-	gl.BufferData(gl.ARRAY_BUFFER, len(positions) * floatSize, gl.Ptr(positions), gl.STATIC_DRAW)
+	vb := vertexBuffer.New(positions, len(positions) * floatInBytes)
+	defer vb.Close()
 
 	// this must be called _after_ gl.BindBuffer()
 	var vertexIndex uint32 = 0
 	var floatsPerAttrib int32 = 2
 	gl.EnableVertexAttribArray(vertexIndex)
-	gl.VertexAttribPointer(vertexIndex, floatsPerAttrib, gl.FLOAT, false, floatsPerAttrib * int32(floatSize), nil)
+	renderer.PanicOnError()
 
-	// Create our index indexBuffer
-	var indexBuffer uint32
-	var numIBuffers int32 = 1
-	gl.GenBuffers(numIBuffers, &indexBuffer);
-	gl.BindBuffer(gl.ELEMENT_ARRAY_BUFFER, indexBuffer)
-	gl.BufferData(gl.ELEMENT_ARRAY_BUFFER, len(indices) * intSize, gl.Ptr(indices), gl.STATIC_DRAW)
-	
+	gl.VertexAttribPointer(vertexIndex, floatsPerAttrib, gl.FLOAT, false, floatsPerAttrib * int32(floatInBytes), nil)
+	renderer.PanicOnError()
+
+	ib := indexBuffer.New(indices, len(indices))
+	defer ib.Close()
+
 	shaderSource := parseShader("basic.shader")
 	shader := createShaders(shaderSource)
 	gl.UseProgram(shader)
@@ -231,8 +209,8 @@ func main() {
 
 	gl.BindVertexArray(0)
 	gl.UseProgram(0)
-	gl.BindBuffer(gl.ARRAY_BUFFER, 0)
-	gl.BindBuffer(gl.ELEMENT_ARRAY_BUFFER, 0)
+	vb.Unbind()
+	ib.Unbind()
 
 	var r float32 = 0.0
 	var increment float32 = 0.02
@@ -241,14 +219,15 @@ func main() {
 		gl.Clear(gl.COLOR_BUFFER_BIT)
 		
 		gl.UseProgram(shader)
-		gl.Uniform4f(location, r, 0.1, 0.1, 1.0)
+		gl.Uniform4f(location, r, 0.1, 0.3, 1.0)
 
+		vb.Bind()
 		gl.BindVertexArray(vao)
-		gl.BindBuffer(gl.ELEMENT_ARRAY_BUFFER, indexBuffer)
+		ib.Bind()
 	
-		glClearError()
+		renderer.ClearError()
 		gl.DrawElements(gl.TRIANGLES, 6, gl.UNSIGNED_INT, nil)
-		glPanicOnError()
+		renderer.PanicOnError()
 		
 		window.SwapBuffers()
 		glfw.PollEvents()
