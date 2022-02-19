@@ -29,3 +29,19 @@ then this code will work because OpenGL automatically creates the Vertex Array o
 ```
 
 then it will not (and indeed, fails with error 1282: )
+
+## Best Approach
+
+Do we _need_ to use **VAO**s? It depends.
+
+If we are using core profile, then yes, VAOs must be explicitly created.
+
+If we use compatibility profile, then it creates a VAO for us.
+
+It _is_ possible to create and bind one single VAO, and then bind a vertex buffer, and specify a vertex layout each time we use it.
+
+Alternatively, for each piece of geometry we can specify a vao.
+
+The general recommendation is to use VAOs, despite certain other suggestions (some time ago) to not use them. However, just because a specification makes a recommendation does not mean it is the best approach.
+
+Ultimately, if speed / performance is critical, it is worth running tests to compare use of multiple VAOs vs use of only one.

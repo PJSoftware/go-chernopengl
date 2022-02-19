@@ -195,6 +195,11 @@ func main() {
 		2, 3, 0,
 	}
 
+	// Create our vertex array object
+	var vao uint32
+	gl.GenVertexArrays(1, &vao)
+	gl.BindVertexArray(vao)
+
 	// Create our vertex buffer
 	var vertexBuffer uint32
 	var numVBuffers int32 = 1
@@ -224,6 +229,7 @@ func main() {
 		panic("Could not locate uniform 'u_Colour'")
 	}
 
+	gl.BindVertexArray(0)
 	gl.UseProgram(0)
 	gl.BindBuffer(gl.ARRAY_BUFFER, 0)
 	gl.BindBuffer(gl.ELEMENT_ARRAY_BUFFER, 0)
@@ -236,9 +242,8 @@ func main() {
 		
 		gl.UseProgram(shader)
 		gl.Uniform4f(location, r, 0.1, 0.1, 1.0)
-		gl.BindBuffer(gl.ARRAY_BUFFER, vertexBuffer)
-		gl.EnableVertexAttribArray(vertexIndex)
-		gl.VertexAttribPointer(vertexIndex, floatsPerAttrib, gl.FLOAT, false, floatsPerAttrib * int32(floatSize), nil)
+
+		gl.BindVertexArray(vao)
 		gl.BindBuffer(gl.ELEMENT_ARRAY_BUFFER, indexBuffer)
 	
 		glClearError()
