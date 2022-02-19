@@ -28,12 +28,6 @@ func glClearError() {
 	for gl.GetError() != gl.NO_ERROR {}
 }
 
-// func glCall(x func()) {
-// 	glClearError()
-// 	x()
-// 	glPanicOnError()
-// }
-
 func glPanicOnError() {
 	errorOccurred := false
 
@@ -224,8 +218,7 @@ func main() {
 		gl.Clear(gl.COLOR_BUFFER_BIT)
 
 		glClearError()
-		// glCall(gl.DrawElements(gl.TRIANGLES, 6, gl.INT, nil)) // introduce error
-		gl.DrawElements(gl.TRIANGLES, 6, gl.UNSIGNED_INT, nil) // introduce error
+		gl.DrawElements(gl.TRIANGLES, 6, gl.UNSIGNED_INT, nil)
 		glPanicOnError()
 
 		window.SwapBuffers()
