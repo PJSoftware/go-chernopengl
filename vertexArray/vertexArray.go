@@ -29,14 +29,14 @@ func (va *VertexArray) AddBuffer(vb *vertexBuffer.VertexBuffer, layout *vertexBu
 	va.Bind()
 	vb.Bind()
 
-	var offset int32 = 0 
+	var offset uintptr = 0 
 	elements := layout.GetElements()
 	for i, element := range *elements {
 		idx := uint32(i)
 		gl.EnableVertexAttribArray(idx)
-		gl.VertexAttribPointer(idx, element.Count, element.Type, element.Normalised, layout.GetStride(), gl.Ptr(offset))
-		offset += element.Count * element.GetSizeOfType()
-	}	
+		gl.VertexAttribPointerWithOffset(idx, element.Count, element.Type, element.Normalised, layout.GetStride(), offset)
+		offset += uintptr(element.Count * element.GetSizeOfType())
+	}
 }
 
 func (va *VertexArray) Bind() {

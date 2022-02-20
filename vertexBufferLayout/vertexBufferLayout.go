@@ -37,7 +37,7 @@ func (vbl *VertexBufferLayout) Push(eType uint32, count int32) {
 	normalised := eType == gl.UNSIGNED_BYTE
 	element := VertexBufferElement{ eType, count, normalised }
 	vbl.Elements = append(vbl.Elements, element)
-	vbl.Stride += element.GetSizeOfType()
+	vbl.Stride += element.GetSizeOfType() * count
 }
 
 func (vbl *VertexBufferLayout) GetElements() *[]VertexBufferElement {
