@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/PJSoftware/go-chernopengl/vertexBuffer"
-	"github.com/PJSoftware/go-chernopengl/vertexBufferLayout"
+	"github.com/PJSoftware/go-chernopengl/pkg/vertexBuffer"
+	"github.com/PJSoftware/go-chernopengl/pkg/vertexBufferLayout"
 	"github.com/go-gl/gl/v4.1-core/gl"
 )
 
