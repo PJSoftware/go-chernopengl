@@ -26,9 +26,9 @@ Additionally, check out:
 13. Abstracting OpenGL into Classes ([doc](doc/13-abstracting-opengl.md)) ([video](https://www.youtube.com/watch?v=bTHqmzjm2UI&list=PLlrATfBNZ98foTJPJ_Ev03o2oq3-GGOS2&index=13))
 14. Buffer Layout Abstraction in OpenGL ([doc](doc/14-buffer-layout.md)) ([video](https://www.youtube.com/watch?v=oD1dvfbyf6A&list=PLlrATfBNZ98foTJPJ_Ev03o2oq3-GGOS2&index=14))
 15. Shader Abstraction in OpenGL ([doc](doc/15-abstracting-shaders.md)) ([video](https://www.youtube.com/watch?v=gDtHL6hy9R8&list=PLlrATfBNZ98foTJPJ_Ev03o2oq3-GGOS2&index=15))
+16. Writing a Basic Renderer in OpenGL ([doc](doc/16-renderer.md)) ([video](https://www.youtube.com/watch?v=jjaTTRFXRAk&list=PLlrATfBNZ98foTJPJ_Ev03o2oq3-GGOS2&index=16))
 
 <!--
-16. Writing a Basic Renderer in OpenGL ([doc](doc/16)) ([video]())
 17. Textures in OpenGL ([doc](doc/17)) ([video]())
 18. Blending in OpenGL ([doc](doc/18)) ([video]())
 19. Maths in OpenGL ([doc](doc/19)) ([video]())
