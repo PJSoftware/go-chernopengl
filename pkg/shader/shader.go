@@ -35,15 +35,9 @@ func New(shaderFile string) *Shader {
 		log.Fatal(err)
 	}
 
-	log.Println(fmt.Sprintf("DEBUG: Shader file located: %s", s.FilePath))
 	shaderSource := s.parseShader()
-	// log.Println(fmt.Sprintf("DEBUG: Vertex shader:\n%v", shaderSource.VertexShader))
-	// log.Println(fmt.Sprintf("DEBUG: Fragment shader:\n%v", shaderSource.FragmentShader))
 	s.createShaders(shaderSource)
-	log.Println(fmt.Sprintf("DEBUG: Program ID = %d", s.RendererID))
 	s.Bind()
-
-	log.Println(fmt.Sprintf("Shaders loaded from %s", s.FilePath))
 	return &s
 }
 
@@ -118,27 +112,21 @@ func (s *Shader) parseShader() shaderParserData {
 }
 
 func (s *Shader) createShaders(shaderSource shaderParserData) {
-	log.Println("DEBUG: in createShaders()")
 	programId := gl.CreateProgram()
 
-	log.Println("DEBUG: Compile Vertex Shader")
 	vsId, err := s.compileShader(shaderSource.VertexShader)
 	if err != nil {
 		panic(err)
 	}
 	
-	log.Println("DEBUG: Compile Fragment Shader")
 	fsId, err := s.compileShader(shaderSource.FragmentShader)
 	if err != nil {
 		panic(err)
 	}
 
-	log.Println("DEBUG: Attach shaders")
 	gl.AttachShader(programId, vsId)
 	gl.AttachShader(programId, fsId)
-	log.Println("DEBUG: Link")
 	gl.LinkProgram(programId)
-	log.Println("DEBUG: Validate")
 	gl.ValidateProgram(programId)
 
 	gl.DeleteShader(vsId)
