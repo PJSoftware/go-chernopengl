@@ -9,14 +9,13 @@ SOURCE=${SRCPATH}/main.go
 .PHONY: build run clean
 
 build:
-	rm -rf ${BINPATH}
-	cp -rf ${RESPATH} ${BINPATH}/${RESPATH}
 	GOARCH=amd64 GOOS=windows go build -o ${BINARY} ${SOURCE}
+	cp -rf ${RESPATH} ${BINPATH}/${RESPATH}
 
 run: ${BINARY}
 	${BINARY}
 
 clean:
-	if [ -f ${BINARY} ]; then rm ${BINARY}; fi
+	if [ -d ${BINPATH} ]; then rm -rf ${BINPATH}; fi
 
 ${BINARY}: build
