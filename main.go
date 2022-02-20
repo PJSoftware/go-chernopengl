@@ -9,8 +9,11 @@ import (
 	"strings"
 
 	"github.com/PJSoftware/go-chernopengl/indexBuffer"
+	"github.com/PJSoftware/go-chernopengl/lookup"
 	"github.com/PJSoftware/go-chernopengl/renderer"
+	"github.com/PJSoftware/go-chernopengl/vertexArray"
 	"github.com/PJSoftware/go-chernopengl/vertexBuffer"
+	"github.com/PJSoftware/go-chernopengl/vertexBufferLayout"
 	"github.com/go-gl/gl/v4.1-core/gl"
 	"github.com/go-gl/glfw/v3.3/glfw"
 )
@@ -25,12 +28,6 @@ type ShaderData struct {
 type ShaderParserData struct {
 	VertexShader ShaderData
 	FragmentShader ShaderData
-}
-
-func init() {
-	// This is needed to arrange that main() runs on main thread.
-	// See documentation for functions that are only allowed to be called from the main thread.
-	runtime.LockOSThread()
 }
 
 func parseShader(shaderFile string) ShaderParserData {
@@ -139,6 +136,8 @@ func createShaders(shaderSource ShaderParserData) uint32 {
 }
 
 func main() {
+	runtime.LockOSThread()
+  
 	err := glfw.Init()
 	if err != nil {
 		panic(err)
@@ -147,8 +146,7 @@ func main() {
 
 	glfw.WindowHint(glfw.ContextVersionMajor, 3)
 	glfw.WindowHint(glfw.ContextVersionMinor, 3)
-	glfw.WindowHint(glfw.OpenGLProfile, glfw.OpenGLCompatProfile)
-	// glfw.WindowHint(glfw.OpenGLProfile, glfw.OpenGLCoreProfile)
+	glfw.WindowHint(glfw.OpenGLProfile, glfw.OpenGLCoreProfile)
 
 	window, err := glfw.CreateWindow(640, 480, "Draw a Square: Abstracting", nil, nil)
 	if err != nil {
@@ -165,7 +163,6 @@ func main() {
 	}
 	log.Println(fmt.Sprintf("Initialise OpenGL version %d", gl.VERSION))
 	
-	floatInBytes := 4	// a float32 is 32 bits, or 4 bytes, in size
 	positions := []float32{ // use a slice
 		-0.5,  0.5,		// vert TL - index 0
 		-0.5, -0.5,		// vert BL - index 1
@@ -178,22 +175,15 @@ func main() {
 		2, 3, 0,
 	}
 
-	// Create our vertex array object
-	var vao uint32
-	gl.GenVertexArrays(1, &vao)
-	gl.BindVertexArray(vao)
+	va := vertexArray.New()
+	defer va.Close()
 
-	vb := vertexBuffer.New(positions, len(positions) * floatInBytes)
+	vb := vertexBuffer.New(positions, len(positions) * int(lookup.SizeOf[gl.FLOAT]))
 	defer vb.Close()
 
-	// this must be called _after_ gl.BindBuffer()
-	var vertexIndex uint32 = 0
-	var floatsPerAttrib int32 = 2
-	gl.EnableVertexAttribArray(vertexIndex)
-	renderer.PanicOnError()
-
-	gl.VertexAttribPointer(vertexIndex, floatsPerAttrib, gl.FLOAT, false, floatsPerAttrib * int32(floatInBytes), nil)
-	renderer.PanicOnError()
+	layout := vertexBufferLayout.New()
+	layout.Push(gl.FLOAT, 2)
+	va.AddBuffer(vb, layout)
 
 	ib := indexBuffer.New(indices, len(indices))
 	defer ib.Close()
@@ -207,11 +197,6 @@ func main() {
 		panic("Could not locate uniform 'u_Colour'")
 	}
 
-	gl.BindVertexArray(0)
-	gl.UseProgram(0)
-	vb.Unbind()
-	ib.Unbind()
-
 	var r float32 = 0.0
 	var increment float32 = 0.02
 	for !window.ShouldClose() {
@@ -221,8 +206,7 @@ func main() {
 		gl.UseProgram(shader)
 		gl.Uniform4f(location, r, 0.1, 0.3, 1.0)
 
-		vb.Bind()
-		gl.BindVertexArray(vao)
+		va.Bind()
 		ib.Bind()
 	
 		renderer.ClearError()

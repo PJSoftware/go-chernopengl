@@ -24,9 +24,9 @@ Additionally, check out:
 11. Uniforms in OpenGL ([doc](doc/11-uniforms.md)) ([video](https://www.youtube.com/watch?v=DE6Xlx_kbo0&list=PLlrATfBNZ98foTJPJ_Ev03o2oq3-GGOS2&index=11))
 12. Vertex Arrays in OpenGL ([doc](doc/12-vertex-arrays.md)) ([video](https://www.youtube.com/watch?v=Bcs56Mm-FJY&list=PLlrATfBNZ98foTJPJ_Ev03o2oq3-GGOS2&index=12))
 13. Abstracting OpenGL into Classes ([doc](doc/13-abstracting-opengl.md)) ([video](https://www.youtube.com/watch?v=bTHqmzjm2UI&list=PLlrATfBNZ98foTJPJ_Ev03o2oq3-GGOS2&index=13))
+14. Buffer Layout Abstraction in OpenGL ([doc](doc/14-buffer-layout.md)) ([video](https://www.youtube.com/watch?v=oD1dvfbyf6A&list=PLlrATfBNZ98foTJPJ_Ev03o2oq3-GGOS2&index=14))
 
 <!--
-14. Buffer Layout Abstraction in OpenGL ([doc]()) ([video]())
 15. Shader Abstraction in OpenGL ([doc]()) ([video]())
 16. Writing a Basic Renderer in OpenGL ([doc]()) ([video]())
 17. Textures in OpenGL ([doc]()) ([video]())
