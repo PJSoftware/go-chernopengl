@@ -29,12 +29,6 @@ type ShaderParserData struct {
 	FragmentShader ShaderData
 }
 
-func init() {
-	// This is needed to arrange that main() runs on main thread.
-	// See documentation for functions that are only allowed to be called from the main thread.
-	runtime.LockOSThread()
-}
-
 func parseShader(shaderFile string) ShaderParserData {
 	type ShaderType int
 	const (
@@ -141,6 +135,8 @@ func createShaders(shaderSource ShaderParserData) uint32 {
 }
 
 func main() {
+	runtime.LockOSThread()
+  
 	err := glfw.Init()
 	if err != nil {
 		panic(err)
@@ -149,8 +145,7 @@ func main() {
 
 	glfw.WindowHint(glfw.ContextVersionMajor, 3)
 	glfw.WindowHint(glfw.ContextVersionMinor, 3)
-	glfw.WindowHint(glfw.OpenGLProfile, glfw.OpenGLCompatProfile)
-	// glfw.WindowHint(glfw.OpenGLProfile, glfw.OpenGLCoreProfile)
+	glfw.WindowHint(glfw.OpenGLProfile, glfw.OpenGLCoreProfile)
 
 	window, err := glfw.CreateWindow(640, 480, "Draw a Square: Abstracting", nil, nil)
 	if err != nil {
@@ -180,11 +175,6 @@ func main() {
 		2, 3, 0,
 	}
 
-	// // Create our vertex array object
-	// var vao uint32
-	// gl.GenVertexArrays(1, &vao)
-	// gl.BindVertexArray(vao)
-
 	va := vertexArray.New()
 	defer va.Close()
 
@@ -207,11 +197,6 @@ func main() {
 		panic("Could not locate uniform 'u_Colour'")
 	}
 
-	// gl.BindVertexArray(0)
-	// gl.UseProgram(0)
-	// vb.Unbind()
-	// ib.Unbind()
-
 	var r float32 = 0.0
 	var increment float32 = 0.02
 	for !window.ShouldClose() {
@@ -221,8 +206,6 @@ func main() {
 		gl.UseProgram(shader)
 		gl.Uniform4f(location, r, 0.1, 0.3, 1.0)
 
-		// vb.Bind()
-		// gl.BindVertexArray(vao)
 		va.Bind()
 		ib.Bind()
 	

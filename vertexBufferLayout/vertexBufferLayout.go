@@ -29,10 +29,6 @@ func New() *VertexBufferLayout {
 	return &vbl
 }
 
-// func (vbl *VertexBufferLayout) Close() {
-// 	// gl.DeleteBuffers(1, &va.RendererID)
-// }
-
 func (vbl *VertexBufferLayout) Push(eType uint32, count int32) {
 	normalised := eType == gl.UNSIGNED_BYTE
 	element := VertexBufferElement{ eType, count, normalised }
