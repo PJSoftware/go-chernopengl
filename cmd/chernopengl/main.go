@@ -39,16 +39,10 @@ func parseShader(shaderFile string) ShaderParserData {
 		Fragment 	ShaderType = 1
 	)
 
-	ex, err := os.Executable()
-	if err != nil {
-			panic(err)
-	}
-	exPath := filepath.Dir(ex)
-	shaderPath := exPath + "/res/shaders"
-
+	shaderPath := "res/shaders/" + shaderFile
 	fmt.Println(shaderPath)
 
-	file, err := os.Open(shaderPath + "/" + shaderFile)
+	file, err := os.Open(shaderPath)
 	if err != nil {
 			log.Fatal(err)
 	}
@@ -144,10 +138,29 @@ func createShaders(shaderSource ShaderParserData) uint32 {
 	return programId
 }
 
+func setWorkingFolder() error {
+	ex, err := os.Executable()
+	if err != nil {
+		return err
+	}
+	exPath := filepath.Dir(ex)
+	
+	if err := os.Chdir(exPath); err != nil {
+		return fmt.Errorf("Error:\tCould not move into the directory (%s)", exPath)
+	}
+
+	return nil
+}
+
 func main() {
+	var err error
+	err = setWorkingFolder()
+	if err != nil {
+		panic(err)
+	}
 	runtime.LockOSThread()
   
-	err := glfw.Init()
+	err = glfw.Init()
 	if err != nil {
 		panic(err)
 	}
