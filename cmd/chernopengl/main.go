@@ -8,12 +8,12 @@ import (
 	"runtime"
 	"strings"
 
-	"github.com/PJSoftware/go-chernopengl/indexBuffer"
-	"github.com/PJSoftware/go-chernopengl/lookup"
-	"github.com/PJSoftware/go-chernopengl/renderer"
-	"github.com/PJSoftware/go-chernopengl/vertexArray"
-	"github.com/PJSoftware/go-chernopengl/vertexBuffer"
-	"github.com/PJSoftware/go-chernopengl/vertexBufferLayout"
+	"github.com/PJSoftware/go-chernopengl/pkg/indexBuffer"
+	"github.com/PJSoftware/go-chernopengl/pkg/lookup"
+	"github.com/PJSoftware/go-chernopengl/pkg/renderer"
+	"github.com/PJSoftware/go-chernopengl/pkg/vertexArray"
+	"github.com/PJSoftware/go-chernopengl/pkg/vertexBuffer"
+	"github.com/PJSoftware/go-chernopengl/pkg/vertexBufferLayout"
 	"github.com/go-gl/gl/v4.1-core/gl"
 	"github.com/go-gl/glfw/v3.3/glfw"
 )

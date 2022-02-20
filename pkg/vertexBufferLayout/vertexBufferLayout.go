@@ -1,7 +1,7 @@
 package vertexBufferLayout
 
 import (
-	"github.com/PJSoftware/go-chernopengl/lookup"
+	"github.com/PJSoftware/go-chernopengl/pkg/lookup"
 	"github.com/go-gl/gl/v4.1-core/gl"
 )
 
