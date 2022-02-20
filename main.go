@@ -9,6 +9,7 @@ import (
 	"strings"
 
 	"github.com/PJSoftware/go-chernopengl/indexBuffer"
+	"github.com/PJSoftware/go-chernopengl/lookup"
 	"github.com/PJSoftware/go-chernopengl/renderer"
 	"github.com/PJSoftware/go-chernopengl/vertexArray"
 	"github.com/PJSoftware/go-chernopengl/vertexBuffer"
@@ -162,7 +163,6 @@ func main() {
 	}
 	log.Println(fmt.Sprintf("Initialise OpenGL version %d", gl.VERSION))
 	
-	floatInBytes := 4	// a float32 is 32 bits, or 4 bytes, in size
 	positions := []float32{ // use a slice
 		-0.5,  0.5,		// vert TL - index 0
 		-0.5, -0.5,		// vert BL - index 1
@@ -178,7 +178,7 @@ func main() {
 	va := vertexArray.New()
 	defer va.Close()
 
-	vb := vertexBuffer.New(positions, len(positions) * floatInBytes)
+	vb := vertexBuffer.New(positions, len(positions) * int(lookup.SizeOf[gl.FLOAT]))
 	defer vb.Close()
 
 	layout := vertexBufferLayout.New()

@@ -1,12 +1,9 @@
 package vertexBufferLayout
 
-import "github.com/go-gl/gl/v4.1-core/gl"
-
-var sizeOf = map[uint32]int32{ 
-	gl.FLOAT: 				4,
-	gl.UNSIGNED_INT: 	4,
-	gl.UNSIGNED_BYTE: 1,
-}
+import (
+	"github.com/PJSoftware/go-chernopengl/lookup"
+	"github.com/go-gl/gl/v4.1-core/gl"
+)
 
 type VertexBufferElement struct {
 	Type       uint32
@@ -15,7 +12,7 @@ type VertexBufferElement struct {
 }
 
 func (vbe *VertexBufferElement) GetSizeOfType() int32 {
-	return sizeOf[vbe.Type]
+	return lookup.SizeOf[vbe.Type]
 }
 
 type VertexBufferLayout struct {
