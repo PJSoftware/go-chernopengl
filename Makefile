@@ -1,5 +1,5 @@
 BINARY=bin/ChernOpenGL.exe
-SOURCE=cmd/chernopengl/main.go
+SOURCE=cmd/ChernOpenGL/main.go
 
 .PHONY: build run clean
 

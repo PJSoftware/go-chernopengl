@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"path/filepath"
 	"runtime"
 	"strings"
 
@@ -37,7 +38,15 @@ func parseShader(shaderFile string) ShaderParserData {
 		Vertex 		ShaderType = 0
 		Fragment 	ShaderType = 1
 	)
-	const shaderPath = "res/shaders"
+
+	ex, err := os.Executable()
+	if err != nil {
+			panic(err)
+	}
+	exPath := filepath.Dir(ex)
+	shaderPath := exPath + "/res/shaders"
+
+	fmt.Println(shaderPath)
 
 	file, err := os.Open(shaderPath + "/" + shaderFile)
 	if err != nil {
