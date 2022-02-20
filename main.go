@@ -10,7 +10,9 @@ import (
 
 	"github.com/PJSoftware/go-chernopengl/indexBuffer"
 	"github.com/PJSoftware/go-chernopengl/renderer"
+	"github.com/PJSoftware/go-chernopengl/vertexArray"
 	"github.com/PJSoftware/go-chernopengl/vertexBuffer"
+	"github.com/PJSoftware/go-chernopengl/vertexBufferLayout"
 	"github.com/go-gl/gl/v4.1-core/gl"
 	"github.com/go-gl/glfw/v3.3/glfw"
 )
@@ -178,22 +180,20 @@ func main() {
 		2, 3, 0,
 	}
 
-	// Create our vertex array object
-	var vao uint32
-	gl.GenVertexArrays(1, &vao)
-	gl.BindVertexArray(vao)
+	// // Create our vertex array object
+	// var vao uint32
+	// gl.GenVertexArrays(1, &vao)
+	// gl.BindVertexArray(vao)
+
+	va := vertexArray.New()
+	defer va.Close()
 
 	vb := vertexBuffer.New(positions, len(positions) * floatInBytes)
 	defer vb.Close()
 
-	// this must be called _after_ gl.BindBuffer()
-	var vertexIndex uint32 = 0
-	var floatsPerAttrib int32 = 2
-	gl.EnableVertexAttribArray(vertexIndex)
-	renderer.PanicOnError()
-
-	gl.VertexAttribPointer(vertexIndex, floatsPerAttrib, gl.FLOAT, false, floatsPerAttrib * int32(floatInBytes), nil)
-	renderer.PanicOnError()
+	layout := vertexBufferLayout.New()
+	layout.Push(gl.FLOAT, 2)
+	va.AddBuffer(vb, layout)
 
 	ib := indexBuffer.New(indices, len(indices))
 	defer ib.Close()
@@ -207,10 +207,10 @@ func main() {
 		panic("Could not locate uniform 'u_Colour'")
 	}
 
-	gl.BindVertexArray(0)
-	gl.UseProgram(0)
-	vb.Unbind()
-	ib.Unbind()
+	// gl.BindVertexArray(0)
+	// gl.UseProgram(0)
+	// vb.Unbind()
+	// ib.Unbind()
 
 	var r float32 = 0.0
 	var increment float32 = 0.02
@@ -221,8 +221,9 @@ func main() {
 		gl.UseProgram(shader)
 		gl.Uniform4f(location, r, 0.1, 0.3, 1.0)
 
-		vb.Bind()
-		gl.BindVertexArray(vao)
+		// vb.Bind()
+		// gl.BindVertexArray(vao)
+		va.Bind()
 		ib.Bind()
 	
 		renderer.ClearError()
