@@ -10,6 +10,7 @@ SOURCE=${SRCPATH}/main.go
 
 build:
 	rm -rf ${BINPATH}/*
+	tools/audit-gl-import.pl
 	GOARCH=amd64 GOOS=windows go build -o ${BINARY} ${SOURCE}
 	cp -rf ${RESPATH} ${BINPATH}/${RESPATH}
 
