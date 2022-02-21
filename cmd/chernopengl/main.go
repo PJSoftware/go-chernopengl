@@ -2,6 +2,8 @@ package main
 
 import (
 	"fmt"
+	"image"
+	"image/jpeg"
 	"log"
 	"os"
 	"path/filepath"
@@ -31,6 +33,13 @@ func setWorkingFolder() error {
 	}
 
 	return nil
+}
+
+func init() {
+	// see https://www.socketloop.com/tutorials/golang-how-to-read-jpg-jpeg-gif-and-png-files
+	// damn important or else At(), Bounds() functions will
+	// caused memory pointer error!!
+	image.RegisterFormat("jpeg", "jpeg", jpeg.Decode, jpeg.DecodeConfig)
 }
 
 func main() {
@@ -115,4 +124,15 @@ func main() {
 		} 
 		r += increment
 	}
+}
+
+// via https://stackoverflow.com/questions/49594259/reading-image-in-go
+func getImageFromFilePath(filePath string) (image.Image, error) {
+	f, err := os.Open(filePath)
+	if err != nil {
+			return nil, err
+	}
+	defer f.Close()
+	image, _, err := image.Decode(f)
+	return image, err
 }
