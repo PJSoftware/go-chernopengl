@@ -27,21 +27,21 @@ Additionally, check out:
 14. Buffer Layout Abstraction in OpenGL ([doc](doc/14-buffer-layout.md)) ([video](https://www.youtube.com/watch?v=oD1dvfbyf6A&list=PLlrATfBNZ98foTJPJ_Ev03o2oq3-GGOS2&index=14))
 15. Shader Abstraction in OpenGL ([doc](doc/15-abstracting-shaders.md)) ([video](https://www.youtube.com/watch?v=gDtHL6hy9R8&list=PLlrATfBNZ98foTJPJ_Ev03o2oq3-GGOS2&index=15))
 
-<!--
-16. Writing a Basic Renderer in OpenGL ([doc](doc/16)) ([video]())
-17. Textures in OpenGL ([doc](doc/17)) ([video]())
-18. Blending in OpenGL ([doc](doc/18)) ([video]())
-19. Maths in OpenGL ([doc](doc/19)) ([video]())
-20. Projection Matrices in OpenGL ([doc](doc/20)) ([video]())
-21. Model View Projection Matrices in OpenGL ([doc](doc/21)) ([video]())
-22. ImGui in OpenGL ([doc](doc/22)) ([video]())
-23. Rendering Multiple Objects in OpenGL ([doc](doc/23)) ([video]())
-24. Setting up a Test Framework for OpenGL ([doc](doc/24)) ([video]())
-25. Creating Tests in OpenGL ([doc](doc/25)) ([video]())
-26. Creating a Texture Test in OpenGL ([doc](doc/26)) ([video]())
-27. How to make your UNIFORMS FASTER in OpenGL ([doc](doc/27)) ([video]())
-28. Batch Rendering - An Introduction ([doc](doc/28)) ([video]())
-29. Batch Rendering - Colors ([doc](doc/29)) ([video]())
-30. Batch Rendering - Textures ([doc](doc/30)) ([video]())
-31. Batch Rendering - Dynamic Geometry ([doc](doc/31)) ([video]())
--->
+### Still Pending
+
+16. Writing a Basic Renderer in OpenGL<!-- ([doc](doc/16)) ([video]()) -->
+17. Textures in OpenGL<!--  ([doc](doc/17)) ([video]()) -->
+18. Blending in OpenGL<!--  ([doc](doc/18)) ([video]()) -->
+19. Maths in OpenGL<!--  ([doc](doc/19)) ([video]()) -->
+20. Projection Matrices in OpenGL<!--  ([doc](doc/20)) ([video]()) -->
+21. Model View Projection Matrices in OpenGL<!--  ([doc](doc/21)) ([video]()) -->
+22. ImGui in OpenGL<!--  ([doc](doc/22)) ([video]()) -->
+23. Rendering Multiple Objects in OpenGL<!--  ([doc](doc/23)) ([video]()) -->
+24. Setting up a Test Framework for OpenGL<!--  ([doc](doc/24)) ([video]()) -->
+25. Creating Tests in OpenGL<!--  ([doc](doc/25)) ([video]()) -->
+26. Creating a Texture Test in OpenGL<!--  ([doc](doc/26)) ([video]()) -->
+27. How to make your UNIFORMS FASTER in OpenGL<!--  ([doc](doc/27)) ([video]()) -->
+28. Batch Rendering - An Introduction<!--  ([doc](doc/28)) ([video]()) -->
+29. Batch Rendering - Colors<!--  ([doc](doc/29)) ([video]()) -->
+30. Batch Rendering - Textures<!--  ([doc](doc/30)) ([video]()) -->
+31. Batch Rendering - Dynamic Geometry<!--  ([doc](doc/31)) ([video]()) -->
