@@ -99,19 +99,12 @@ func main() {
 	var r float32 = 0.0
 	var increment float32 = 0.02
 	for !window.ShouldClose() {
-		
-		gl.Clear(gl.COLOR_BUFFER_BIT)
-		
-		shader.Bind()
-		uniform.SetUniform4f(r, 0.1, 0.3, 1.0)
 
-		va.Bind()
-		ib.Bind()
-	
-		renderer.ClearError()
-		gl.DrawElements(gl.TRIANGLES, 6, gl.UNSIGNED_INT, nil)
-		renderer.PanicOnError()
+		renderer.Clear()
 		
+		uniform.SetUniform4f(r, 0.1, 0.3, 1.0)
+		renderer.Draw(va, ib, shader)
+
 		window.SwapBuffers()
 		glfw.PollEvents()
 
