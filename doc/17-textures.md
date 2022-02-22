@@ -40,3 +40,25 @@ We need to:
 ### Varying
 
 To pass values between the vertex shader (which takes external input) and the fragment shader (which has an output) we use a "varying", typically with a "v\_" prefix. This is passed _out_ from the vertex shader, _in_ to the fragment shader.
+
+## Image
+
+When we finally tried to compile and run our code, we got:
+
+```err
+panic: interface conversion: image.Image is *image.YCbCr, not *image.RGBA
+```
+
+It seems to me that the simplest approach is to change our `JPG` file to a `PNG`. This now gave me:
+
+```err
+2022/02/23 02:06:36 decoding image: image: unknown format
+```
+
+Fixing this with:
+
+```go
+image.RegisterFormat("png", "png", png.Decode, png.DecodeConfig)
+```
+
+This worked ... with the exception that our image was, as somewhat expected, upside down. The easiest way to change this should be to remap the texture coordinates.

@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 	"image"
-	"image/jpeg"
+	"image/png"
 	"log"
 	"os"
 	"path/filepath"
@@ -40,7 +40,7 @@ func init() {
 	// see https://www.socketloop.com/tutorials/golang-how-to-read-jpg-jpeg-gif-and-png-files
 	// damn important or else At(), Bounds() functions will
 	// caused memory pointer error!!
-	image.RegisterFormat("jpeg", "jpeg", jpeg.Decode, jpeg.DecodeConfig)
+	image.RegisterFormat("png", "png", png.Decode, png.DecodeConfig)
 }
 
 func main() {
@@ -78,10 +78,10 @@ func main() {
 	
 	positions := []float32{ // use a slice
 		// texture coordinates added -- may need to flip here if upside down
-		-0.5,  0.5,	0.0, 1.0,	// vert TL - index 0
-		-0.5, -0.5, 0.0, 0.0,	// vert BL - index 1
-		 0.5, -0.5,	1.0, 0.0,	// vert BR - index 2
-		 0.5,  0.5,	1.0, 1.0,	// vert TR - index 3
+		-0.5,  0.5,	0.0, 0.0,	// vert TL - index 0
+		-0.5, -0.5, 0.0, 1.0,	// vert BL - index 1
+		 0.5, -0.5,	1.0, 1.0,	// vert BR - index 2
+		 0.5,  0.5,	1.0, 0.0,	// vert TR - index 3
 	}
 
 	indices := []uint32{
@@ -106,7 +106,7 @@ func main() {
 	shader := shader.New("basic.shader")
 	defer shader.Close()
 	
-	tx := texture.New("mimp.jpg")
+	tx := texture.New("mimp.png")
 	var txSlot int32 = 0
 	tx.Bind(txSlot)
 	uniform_texture := shaderUniform.New(shader, "u_Texture")
