@@ -105,7 +105,6 @@ func main() {
 
 	shader := shader.New("basic.shader")
 	defer shader.Close()
-	uniform_colour := shaderUniform.New(shader, "u_Colour")
 	
 	tx := texture.New("mimp.jpg")
 	var txSlot int32 = 0
@@ -113,23 +112,12 @@ func main() {
 	uniform_texture := shaderUniform.New(shader, "u_Texture")
 	uniform_texture.SetUniform1i(txSlot)
 
-	var r float32 = 0.0
-	var increment float32 = 0.02
 	for !window.ShouldClose() {
 
 		renderer.Clear()
-		
-		uniform_colour.SetUniform4f(r, 0.1, 0.3, 1.0)
 		renderer.Draw(va, ib, shader)
 
 		window.SwapBuffers()
 		glfw.PollEvents()
-
-		if r >= 1.0 {
-			increment = -0.02
-		} else if r <= 0.0 {
-			increment = 0.02
-		} 
-		r += increment
 	}
 }
