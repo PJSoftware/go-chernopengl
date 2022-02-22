@@ -1,2 +1,3 @@
 .vscode/*.log
-bin/*Thumbs.db
+bin/
+*Thumbs.db
