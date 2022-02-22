@@ -56,8 +56,8 @@ func (t *Texture) Close() {
 	gl.DeleteTextures(1, &t.RendererID)
 }
 
-func (t *Texture) Bind(slot uint32) {
-	gl.ActiveTexture(gl.TEXTURE0 + slot)
+func (t *Texture) Bind(slot int32) {
+	gl.ActiveTexture(uint32(gl.TEXTURE0 + slot))
 	gl.BindTexture(gl.TEXTURE_2D, t.RendererID)
 }
 

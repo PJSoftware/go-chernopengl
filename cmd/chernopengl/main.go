@@ -77,10 +77,11 @@ func main() {
 	log.Println(fmt.Sprintf("Initialise OpenGL version %d", gl.VERSION))
 	
 	positions := []float32{ // use a slice
-		-0.5,  0.5,		// vert TL - index 0
-		-0.5, -0.5,		// vert BL - index 1
-		 0.5, -0.5,		// vert BR - index 2
-		 0.5,  0.5,		// vert TR - index 3
+		// texture coordinates added -- may need to flip here if upside down
+		-0.5,  0.5,	0.0, 1.0,	// vert TL - index 0
+		-0.5, -0.5, 0.0, 0.0,	// vert BL - index 1
+		 0.5, -0.5,	1.0, 0.0,	// vert BR - index 2
+		 0.5,  0.5,	1.0, 1.0,	// vert TR - index 3
 	}
 
 	indices := []uint32{
@@ -96,18 +97,21 @@ func main() {
 
 	layout := vertexBufferLayout.New()
 	layout.Push(gl.FLOAT, 2)
+	layout.Push(gl.FLOAT, 2)
 	va.AddBuffer(vb, layout)
-
-	tx := texture.New("mimp.jpg")
-	tx.Bind(0)
 
 	ib := indexBuffer.New(indices, len(indices))
 	defer ib.Close()
 
 	shader := shader.New("basic.shader")
 	defer shader.Close()
-
-	uniform := shaderUniform.New(shader, "u_Colour")
+	uniform_colour := shaderUniform.New(shader, "u_Colour")
+	
+	tx := texture.New("mimp.jpg")
+	var txSlot int32 = 0
+	tx.Bind(txSlot)
+	uniform_texture := shaderUniform.New(shader, "u_Texture")
+	uniform_texture.SetUniform1i(txSlot)
 
 	var r float32 = 0.0
 	var increment float32 = 0.02
@@ -115,7 +119,7 @@ func main() {
 
 		renderer.Clear()
 		
-		uniform.SetUniform4f(r, 0.1, 0.3, 1.0)
+		uniform_colour.SetUniform4f(r, 0.1, 0.3, 1.0)
 		renderer.Draw(va, ib, shader)
 
 		window.SwapBuffers()

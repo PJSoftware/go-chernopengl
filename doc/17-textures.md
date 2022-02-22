@@ -34,3 +34,9 @@ We need to:
 - send an integer uniform to our shader
 - the integer is the slot we have bound the texture to.
 - In the shader code we use that integer to sample from the texture.
+
+## Shader
+
+### Varying
+
+To pass values between the vertex shader (which takes external input) and the fragment shader (which has an output) we use a "varying", typically with a "v\_" prefix. This is passed _out_ from the vertex shader, _in_ to the fragment shader.

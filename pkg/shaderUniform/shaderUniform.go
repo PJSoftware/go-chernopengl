@@ -26,6 +26,10 @@ func New(shader *shader.Shader, name string) *ShaderUniform {
 	return &su
 }
 
+func (su *ShaderUniform) SetUniform1i(i1 int32) {
+	gl.Uniform1i(su.Location, i1)
+}
+
 func (su *ShaderUniform) SetUniform4f(f1, f2, f3, f4 float32) {
 	gl.Uniform4f(su.Location, f1, f2, f3, f4)
 }
