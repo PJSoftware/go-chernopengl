@@ -62,3 +62,7 @@ image.RegisterFormat("png", "png", png.Decode, png.DecodeConfig)
 ```
 
 This worked ... with the exception that our image was, as somewhat expected, upside down. The easiest way to change this should be to remap the texture coordinates.
+
+## Final Note
+
+After resolving a few issues, I got my image correctly displaying. The Cherno, however, did not. Turns out this is because his image had transparencies; to make this work we need to enable blending -- which is the topic of the next video!
