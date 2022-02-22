@@ -12,3 +12,13 @@ Reading the image will require a library (unless Go has native support for readi
 - Upload our pixel array to the GPU as a texture.
 - Bind the texture
 - Modify our shader to read the texture; the fragment shader can read from the image data and specify the colour of each pixel.
+
+## Using Textures in Go
+
+Note that images are typically considered to start at the top-left corner, but `OpenGL` starts at the bottom-left. `stb_image` has a function to flip the buffer to deal with this. If our image comes in upside down, well, _there's yer problem!_
+
+### Texture Slots
+
+Our `Texture.Bind()` has a `slot` parameter. (In the original `C++` code it was specified as an optional parameter with a default of 0; `Go` does not support optional parameters so we'll need to explicitly specify `0`. This is not exactly _bad_!)
+
+Note that a modern PC running `OpenGL` will likely have 32 slots available whereas a smart phone may have 8. However, whatever the number your platform has, it is possible to query `OpenGL` to find out the upper limit.
