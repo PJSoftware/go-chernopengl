@@ -89,6 +89,9 @@ func main() {
 		2, 3, 0,
 	}
 
+	// gl.BlendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA)
+	// gl.Enable(gl.BLEND)
+
 	va := vertexArray.New()
 	defer va.Close()
 
@@ -106,7 +109,9 @@ func main() {
 	shader := shader.New("basic.shader")
 	defer shader.Close()
 	
+	// tx := texture.New("mimp_transparent.png")
 	tx := texture.New("mimp.png")
+	
 	var txSlot int32 = 0
 	tx.Bind(txSlot)
 	uniform_texture := shaderUniform.New(shader, "u_Texture")

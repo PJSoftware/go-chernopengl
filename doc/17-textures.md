@@ -66,3 +66,11 @@ This worked ... with the exception that our image was, as somewhat expected, ups
 ## Final Note
 
 After resolving a few issues, I got my image correctly displaying. The Cherno, however, did not. Turns out this is because his image had transparencies; to make this work we need to enable blending -- which is the topic of the next video!
+
+I attempted to add transparency to my image to test the quick solution he added -- but got this:
+
+```err
+panic: interface conversion: image.Image is *image.NRGBA, not *image.RGBA
+```
+
+It seems, sooner or later, I'll have to figure out how to solve this issue. But ... not today. For now I'll leave that code in, but commented out.
