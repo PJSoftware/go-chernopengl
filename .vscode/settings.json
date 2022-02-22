@@ -8,6 +8,7 @@
     "glfw",
     "glsl",
     "initialise",
+    "mimp",
     "normalised",
     "opengl",
     "Optimisation",

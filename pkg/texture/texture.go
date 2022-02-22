@@ -52,8 +52,14 @@ func New(file string) *Texture {
 	return &t
 }
 
-func (t *Texture) Close()           {}
-func (t *Texture) Bind(slot uint32) {}
+func (t *Texture) Close() {
+	gl.DeleteTextures(1, &t.RendererID)
+}
+
+func (t *Texture) Bind(slot uint32) {
+	gl.ActiveTexture(gl.TEXTURE0 + slot)
+	gl.BindTexture(gl.TEXTURE_2D, t.RendererID)
+}
 
 func (t *Texture) Unbind() {
 	gl.BindTexture(gl.TEXTURE_2D, 0)

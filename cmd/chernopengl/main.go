@@ -14,6 +14,7 @@ import (
 	"github.com/PJSoftware/go-chernopengl/pkg/renderer"
 	"github.com/PJSoftware/go-chernopengl/pkg/shader"
 	"github.com/PJSoftware/go-chernopengl/pkg/shaderUniform"
+	"github.com/PJSoftware/go-chernopengl/pkg/texture"
 	"github.com/PJSoftware/go-chernopengl/pkg/vertexArray"
 	"github.com/PJSoftware/go-chernopengl/pkg/vertexBuffer"
 	"github.com/PJSoftware/go-chernopengl/pkg/vertexBufferLayout"
@@ -97,6 +98,9 @@ func main() {
 	layout.Push(gl.FLOAT, 2)
 	va.AddBuffer(vb, layout)
 
+	tx := texture.New("mimp.jpg")
+	tx.Bind(0)
+
 	ib := indexBuffer.New(indices, len(indices))
 	defer ib.Close()
 
@@ -124,15 +128,4 @@ func main() {
 		} 
 		r += increment
 	}
-}
-
-// via https://stackoverflow.com/questions/49594259/reading-image-in-go
-func getImageFromFilePath(filePath string) (image.Image, error) {
-	f, err := os.Open(filePath)
-	if err != nil {
-			return nil, err
-	}
-	defer f.Close()
-	image, _, err := image.Decode(f)
-	return image, err
 }

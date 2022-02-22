@@ -22,3 +22,15 @@ Note that images are typically considered to start at the top-left corner, but `
 Our `Texture.Bind()` has a `slot` parameter. (In the original `C++` code it was specified as an optional parameter with a default of 0; `Go` does not support optional parameters so we'll need to explicitly specify `0`. This is not exactly _bad_!)
 
 Note that a modern PC running `OpenGL` will likely have 32 slots available whereas a smart phone may have 8. However, whatever the number your platform has, it is possible to query `OpenGL` to find out the upper limit.
+
+### Using Texture
+
+To tell our shader to use our texture (and which slot to use) we pass it in as a uniform. Sort of.
+
+It's not really an integer slot, it's a `sampler` slot. This is "a bit hazy, and a bit weird"!
+
+We need to:
+
+- send an integer uniform to our shader
+- the integer is the slot we have bound the texture to.
+- In the shader code we use that integer to sample from the texture.
