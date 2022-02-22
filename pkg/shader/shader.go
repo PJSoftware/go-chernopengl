@@ -7,6 +7,7 @@ import (
 	"os"
 	"strings"
 
+	"github.com/PJSoftware/go-chernopengl/pkg/resourcePath"
 	"github.com/go-gl/gl/v4.1-core/gl"
 )
 
@@ -27,13 +28,14 @@ type shaderParserData struct {
 	FragmentShader shaderData
 }
 
-func New(shaderFile string) *Shader {
+func New(file string) *Shader {
 	s := Shader{}
 	s.RendererID = 0
-	err := s.locateShader(shaderFile)
+	path, err := resourcePath.Shader(file)
 	if err != nil {
 		log.Fatal(err)
 	}
+	s.FilePath = path
 
 	shaderSource := s.parseShader()
 	s.createShaders(shaderSource)
@@ -51,14 +53,6 @@ func (s *Shader) Bind() {
 
 func (s *Shader) Unbind() {
 	gl.UseProgram(0)
-}
-
-func (s *Shader) locateShader(shaderFile string) error {
-	s.FilePath = "res/shaders/" + shaderFile
-	if _, err := os.Stat(s.FilePath); err != nil {
-		return fmt.Errorf("Shader definition '%s' not found", s.FilePath)
-	}
-	return nil
 }
 
 func (s *Shader) parseShader() shaderParserData {

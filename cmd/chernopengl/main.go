@@ -2,6 +2,8 @@ package main
 
 import (
 	"fmt"
+	"image"
+	"image/png"
 	"log"
 	"os"
 	"path/filepath"
@@ -12,6 +14,7 @@ import (
 	"github.com/PJSoftware/go-chernopengl/pkg/renderer"
 	"github.com/PJSoftware/go-chernopengl/pkg/shader"
 	"github.com/PJSoftware/go-chernopengl/pkg/shaderUniform"
+	"github.com/PJSoftware/go-chernopengl/pkg/texture"
 	"github.com/PJSoftware/go-chernopengl/pkg/vertexArray"
 	"github.com/PJSoftware/go-chernopengl/pkg/vertexBuffer"
 	"github.com/PJSoftware/go-chernopengl/pkg/vertexBufferLayout"
@@ -31,6 +34,13 @@ func setWorkingFolder() error {
 	}
 
 	return nil
+}
+
+func init() {
+	// see https://www.socketloop.com/tutorials/golang-how-to-read-jpg-jpeg-gif-and-png-files
+	// damn important or else At(), Bounds() functions will
+	// caused memory pointer error!!
+	image.RegisterFormat("png", "png", png.Decode, png.DecodeConfig)
 }
 
 func main() {
@@ -67,16 +77,20 @@ func main() {
 	log.Println(fmt.Sprintf("Initialise OpenGL version %d", gl.VERSION))
 	
 	positions := []float32{ // use a slice
-		-0.5,  0.5,		// vert TL - index 0
-		-0.5, -0.5,		// vert BL - index 1
-		 0.5, -0.5,		// vert BR - index 2
-		 0.5,  0.5,		// vert TR - index 3
+		// texture coordinates added -- may need to flip here if upside down
+		-0.5,  0.5,	0.0, 0.0,	// vert TL - index 0
+		-0.5, -0.5, 0.0, 1.0,	// vert BL - index 1
+		 0.5, -0.5,	1.0, 1.0,	// vert BR - index 2
+		 0.5,  0.5,	1.0, 0.0,	// vert TR - index 3
 	}
 
 	indices := []uint32{
 		0, 1, 2,
 		2, 3, 0,
 	}
+
+	// gl.BlendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA)
+	// gl.Enable(gl.BLEND)
 
 	va := vertexArray.New()
 	defer va.Close()
@@ -86,6 +100,7 @@ func main() {
 
 	layout := vertexBufferLayout.New()
 	layout.Push(gl.FLOAT, 2)
+	layout.Push(gl.FLOAT, 2)
 	va.AddBuffer(vb, layout)
 
 	ib := indexBuffer.New(indices, len(indices))
@@ -93,26 +108,21 @@ func main() {
 
 	shader := shader.New("basic.shader")
 	defer shader.Close()
+	
+	// tx := texture.New("mimp_transparent.png")
+	tx := texture.New("mimp.png")
+	
+	var txSlot int32 = 0
+	tx.Bind(txSlot)
+	uniform_texture := shaderUniform.New(shader, "u_Texture")
+	uniform_texture.SetUniform1i(txSlot)
 
-	uniform := shaderUniform.New(shader, "u_Colour")
-
-	var r float32 = 0.0
-	var increment float32 = 0.02
 	for !window.ShouldClose() {
 
 		renderer.Clear()
-		
-		uniform.SetUniform4f(r, 0.1, 0.3, 1.0)
 		renderer.Draw(va, ib, shader)
 
 		window.SwapBuffers()
 		glfw.PollEvents()
-
-		if r >= 1.0 {
-			increment = -0.02
-		} else if r <= 0.0 {
-			increment = 0.02
-		} 
-		r += increment
 	}
 }

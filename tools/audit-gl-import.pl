@@ -21,6 +21,8 @@ if ($found == 0) {
   die "ERROR: No go files found/audited";
 } elsif ($count > 0) {
   die "ERROR: Unexpected go-gl version included";
+} else {
+  print "Audit successful: 0 problems found\n";
 }
 
 sub audit {
