@@ -9,7 +9,6 @@ import (
 	"log"
 	"os"
 	"reflect"
-	"unsafe"
 
 	"github.com/PJSoftware/go-chernopengl/pkg/resourcePath"
 	"github.com/go-gl/gl/v4.1-core/gl"
@@ -65,7 +64,7 @@ func New(file string) *Texture {
 	gl.TexImage2D(gl.TEXTURE_2D, 0, gl.RGBA8,
 		int32(myImage.Bounds().Dx()), int32(myImage.Bounds().Dy()), 0,
 		gl.RGBA, gl.UNSIGNED_BYTE,
-		unsafe.Pointer(&rgbaPix[0]),
+		gl.Ptr(&rgbaPix[0]),
 	)
 
 	t.Unbind()
