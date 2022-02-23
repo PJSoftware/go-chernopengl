@@ -1,9 +1,14 @@
 package texture
 
 import (
+	"fmt"
 	"image"
+	"image/draw"
+	"image/jpeg"
+	"image/png"
 	"log"
 	"os"
+	"reflect"
 	"unsafe"
 
 	"github.com/PJSoftware/go-chernopengl/pkg/resourcePath"
@@ -14,6 +19,14 @@ type Texture struct {
 	RendererID         uint32
 	FilePath           string
 	Width, Height, BPP int32
+}
+
+func init() {
+	// see https://www.socketloop.com/tutorials/golang-how-to-read-jpg-jpeg-gif-and-png-files
+	// damn important or else At(), Bounds() functions will
+	// caused memory pointer error!!
+	image.RegisterFormat("jpeg", "jpeg", jpeg.Decode, jpeg.DecodeConfig)
+	image.RegisterFormat("png", "png", png.Decode, png.DecodeConfig)
 }
 
 func New(file string) *Texture {
@@ -34,7 +47,17 @@ func New(file string) *Texture {
 
 	myImage, _, err := image.Decode(f)
 	if err != nil {
-		log.Fatal("decoding image: " + err.Error())
+		log.Fatal("error decoding image: " + err.Error())
+	}
+	myImageType := fmt.Sprintf("%v", reflect.TypeOf(myImage))
+	log.Println(fmt.Sprintf("Image type = %s", myImageType))
+	var rgbaPix []uint8
+	if reflect.TypeOf(myImage).Name() != "*image.RGBA" {
+		newImage := image.NewRGBA(myImage.Bounds())
+		draw.Draw(newImage, myImage.Bounds(), myImage, image.Point{}, draw.Over)
+		rgbaPix = newImage.Pix
+	} else {
+		rgbaPix = myImage.(*image.RGBA).Pix
 	}
 
 	gl.TexParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR)
@@ -45,7 +68,7 @@ func New(file string) *Texture {
 	gl.TexImage2D(gl.TEXTURE_2D, 0, gl.RGBA8,
 		int32(myImage.Bounds().Dx()), int32(myImage.Bounds().Dy()), 0,
 		gl.RGBA, gl.UNSIGNED_BYTE,
-		unsafe.Pointer(&myImage.(*image.RGBA).Pix[0]),
+		unsafe.Pointer(&rgbaPix[0]),
 	)
 
 	t.Unbind()

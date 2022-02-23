@@ -2,8 +2,6 @@ package main
 
 import (
 	"fmt"
-	"image"
-	"image/png"
 	"log"
 	"os"
 	"path/filepath"
@@ -34,13 +32,6 @@ func setWorkingFolder() error {
 	}
 
 	return nil
-}
-
-func init() {
-	// see https://www.socketloop.com/tutorials/golang-how-to-read-jpg-jpeg-gif-and-png-files
-	// damn important or else At(), Bounds() functions will
-	// caused memory pointer error!!
-	image.RegisterFormat("png", "png", png.Decode, png.DecodeConfig)
 }
 
 func main() {
@@ -89,8 +80,8 @@ func main() {
 		2, 3, 0,
 	}
 
-	// gl.BlendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA)
-	// gl.Enable(gl.BLEND)
+	gl.BlendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA)
+	gl.Enable(gl.BLEND)
 
 	va := vertexArray.New()
 	defer va.Close()
@@ -109,8 +100,9 @@ func main() {
 	shader := shader.New("basic.shader")
 	defer shader.Close()
 	
-	// tx := texture.New("mimp_transparent.png")
-	tx := texture.New("mimp.png")
+	tx := texture.New("mimp_transparent.png")
+	// tx := texture.New("mimp.png") // works
+	// tx := texture.New("mimp.jpg")	// works
 	
 	var txSlot int32 = 0
 	tx.Bind(txSlot)
