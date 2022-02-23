@@ -28,10 +28,10 @@ Additionally, check out:
 15. Shader Abstraction in OpenGL ([doc](doc/15-abstracting-shaders.md)) ([video](https://www.youtube.com/watch?v=gDtHL6hy9R8&list=PLlrATfBNZ98foTJPJ_Ev03o2oq3-GGOS2&index=15))
 16. Writing a Basic Renderer in OpenGL ([doc](doc/16-renderer.md)) ([video](https://www.youtube.com/watch?v=jjaTTRFXRAk&list=PLlrATfBNZ98foTJPJ_Ev03o2oq3-GGOS2&index=16))
 17. Textures in OpenGL ([doc](doc/17-textures.md)) ([video](https://www.youtube.com/watch?v=n4k7ANAFsIQ&list=PLlrATfBNZ98foTJPJ_Ev03o2oq3-GGOS2&index=17))
+18. Blending in OpenGL ([doc](doc/18-blending.md)) ([video](https://www.youtube.com/watch?v=o1_yJ60UIxs&list=PLlrATfBNZ98foTJPJ_Ev03o2oq3-GGOS2&index=18))
 
 ### Still Pending
 
-- Blending in OpenGL<!--  ([doc](doc/18)) ([video]()) -->
 - Maths in OpenGL<!--  ([doc](doc/19)) ([video]()) -->
 - Projection Matrices in OpenGL<!--  ([doc](doc/20)) ([video]()) -->
 - Model View Projection Matrices in OpenGL<!--  ([doc](doc/21)) ([video]()) -->
