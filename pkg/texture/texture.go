@@ -22,9 +22,6 @@ type Texture struct {
 }
 
 func init() {
-	// see https://www.socketloop.com/tutorials/golang-how-to-read-jpg-jpeg-gif-and-png-files
-	// damn important or else At(), Bounds() functions will
-	// caused memory pointer error!!
 	image.RegisterFormat("jpeg", "jpeg", jpeg.Decode, jpeg.DecodeConfig)
 	image.RegisterFormat("png", "png", png.Decode, png.DecodeConfig)
 }
