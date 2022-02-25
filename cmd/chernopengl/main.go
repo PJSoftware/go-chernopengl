@@ -111,7 +111,7 @@ func main() {
 	uniform_texture.SetUniform1i(txSlot)
 	
 	uniform_mvp := shaderUniform.New(shader, "u_MVP")
-	uniform_mvp.SetUniformMat4f(proj)
+	uniform_mvp.SetUniformMatrix4fv(proj)
 
 	for !window.ShouldClose() {
 

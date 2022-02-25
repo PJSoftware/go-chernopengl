@@ -35,6 +35,6 @@ func (su *ShaderUniform) SetUniform4f(f1, f2, f3, f4 float32) {
 	gl.Uniform4f(su.Location, f1, f2, f3, f4)
 }
 
-func (su *ShaderUniform) SetUniformMat4f(matrix glm.Mat4) {
+func (su *ShaderUniform) SetUniformMatrix4fv(matrix glm.Mat4) {
 	gl.UniformMatrix4fv(su.Location, 1, false, &matrix[0])
 }
