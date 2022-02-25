@@ -75,7 +75,7 @@ func main() {
 	}
 	log.Println(fmt.Sprintf("Initialise OpenGL version %d", gl.VERSION))
 	
-	sqDim := 180.0
+	sqDim := 245.0
 	sqOffset := float32(sqDim/2.0)
 
 	minX := sqOffset
