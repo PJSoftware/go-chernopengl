@@ -75,14 +75,19 @@ func main() {
 	}
 	log.Println(fmt.Sprintf("Initialise OpenGL version %d", gl.VERSION))
 	
-	sqDim := 350.0
+	sqDim := 245.0
 	sqOffset := float32(sqDim/2.0)
+
+	minX := sqOffset
+	maxX := width - sqOffset
+	minY := sqOffset
+	maxY := height - sqOffset
 	positions := []float32{ // use a slice
 		// texture coordinates added -- may need to flip here if upside down
-		cpx - sqOffset, cpy + sqOffset, 0.0, 0.0,	// vert TL - index 0
-		cpx - sqOffset, cpy - sqOffset, 0.0, 1.0,	// vert BL - index 1
-		cpx + sqOffset, cpy - sqOffset,	1.0, 1.0,	// vert BR - index 2
-		cpx + sqOffset, cpy + sqOffset,	1.0, 0.0,	// vert TR - index 3
+		-sqOffset,  sqOffset, 0.0, 0.0,	// vert TL - index 0
+		-sqOffset, -sqOffset, 0.0, 1.0,	// vert BL - index 1
+		 sqOffset, -sqOffset,	1.0, 1.0,	// vert BR - index 2
+		 sqOffset,  sqOffset,	1.0, 0.0,	// vert TR - index 3
 	}
 
 	indices := []uint32{
@@ -108,6 +113,8 @@ func main() {
 	defer ib.Close()
 
 	proj := glm.Ortho(1.0, float32(width), 1.0, float32(height), -1.0, 1.0)
+	view := glm.Translate3D(0.0, 0.0, 0.0)
+	mv := proj.Mul4(&view)
 
 	shader := shader.New("basic.shader")
 	defer shader.Close()
@@ -120,12 +127,23 @@ func main() {
 	uniform_texture.SetUniform1i(txSlot)
 	
 	uniform_mvp := shaderUniform.New(shader, "u_MVP")
-	uniform_mvp.SetUniformMatrix4fv(proj)
 
+	dx := 1.0
+	dy := 1.0
+	x := sqOffset
+	y := sqOffset
 	for !window.ShouldClose() {
+		model := glm.Translate3D(x, y, 0.0)
+		mvp := mv.Mul4(&model)
+		uniform_mvp.SetUniformMatrix4fv(mvp)
 
 		renderer.Clear()
 		renderer.Draw(va, ib, shader)
+
+		x += float32(dx)
+		y += float32(dy)
+		if x >= maxX || x <= minX {	dx = -dx }
+		if y >= maxY || y <= minY {	dy = -dy }
 
 		window.SwapBuffers()
 		glfw.PollEvents()
