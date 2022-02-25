@@ -5,6 +5,7 @@ import (
 	"log"
 
 	"github.com/PJSoftware/go-chernopengl/pkg/shader"
+	"github.com/engoengine/glm"
 	"github.com/go-gl/gl/v4.1-core/gl"
 )
 
@@ -32,4 +33,8 @@ func (su *ShaderUniform) SetUniform1i(i1 int32) {
 
 func (su *ShaderUniform) SetUniform4f(f1, f2, f3, f4 float32) {
 	gl.Uniform4f(su.Location, f1, f2, f3, f4)
+}
+
+func (su *ShaderUniform) SetUniformMatrix4fv(matrix glm.Mat4) {
+	gl.UniformMatrix4fv(su.Location, 1, false, &matrix[0])
 }
