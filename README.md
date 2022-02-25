@@ -30,10 +30,10 @@ Additionally, check out:
 17. Textures in OpenGL ([doc](doc/17-textures.md)) ([video](https://www.youtube.com/watch?v=n4k7ANAFsIQ&list=PLlrATfBNZ98foTJPJ_Ev03o2oq3-GGOS2&index=17))
 18. Blending in OpenGL ([doc](doc/18-blending.md)) ([video](https://www.youtube.com/watch?v=o1_yJ60UIxs&list=PLlrATfBNZ98foTJPJ_Ev03o2oq3-GGOS2&index=18))
 19. Maths in OpenGL ([doc](doc/19-maths-in-opengl.md)) ([video](https://www.youtube.com/watch?v=VuYnjsDOx60&list=PLlrATfBNZ98foTJPJ_Ev03o2oq3-GGOS2&index=19))
+20. Projection Matrices in OpenGL ([doc](doc/20-proj-matrices.md)) ([video](https://www.youtube.com/watch?v=xZs6K7VLM7A&list=PLlrATfBNZ98foTJPJ_Ev03o2oq3-GGOS2&index=20))
 
 ### Still Pending
 
-- Projection Matrices in OpenGL<!--  ([doc](doc/20)) ([video]()) -->
 - Model View Projection Matrices in OpenGL<!--  ([doc](doc/21)) ([video]()) -->
 - ImGui in OpenGL<!--  ([doc](doc/22)) ([video]()) -->
 - Rendering Multiple Objects in OpenGL<!--  ([doc](doc/23)) ([video]()) -->
