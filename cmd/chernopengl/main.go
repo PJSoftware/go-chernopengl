@@ -21,6 +21,13 @@ import (
 	"github.com/go-gl/glfw/v3.3/glfw"
 )
 
+const (
+	width = 960
+	height = 540
+	cpx = width/2.0
+	cpy = height/2.0
+)
+
 func setWorkingFolder() error {
 	ex, err := os.Executable()
 	if err != nil {
@@ -53,7 +60,7 @@ func main() {
 	glfw.WindowHint(glfw.ContextVersionMinor, 3)
 	glfw.WindowHint(glfw.OpenGLProfile, glfw.OpenGLCoreProfile)
 
-	window, err := glfw.CreateWindow(640, 480, "Draw a Square: Abstracting", nil, nil)
+	window, err := glfw.CreateWindow(width, height, "Draw a Square: Projection Matrix", nil, nil)
 	if err != nil {
 		panic(err)
 	}
@@ -68,12 +75,14 @@ func main() {
 	}
 	log.Println(fmt.Sprintf("Initialise OpenGL version %d", gl.VERSION))
 	
+	sqDim := 350.0
+	sqOffset := float32(sqDim/2.0)
 	positions := []float32{ // use a slice
 		// texture coordinates added -- may need to flip here if upside down
-		-0.5,  0.5,	0.0, 0.0,	// vert TL - index 0
-		-0.5, -0.5, 0.0, 1.0,	// vert BL - index 1
-		 0.5, -0.5,	1.0, 1.0,	// vert BR - index 2
-		 0.5,  0.5,	1.0, 0.0,	// vert TR - index 3
+		cpx - sqOffset, cpy + sqOffset, 0.0, 0.0,	// vert TL - index 0
+		cpx - sqOffset, cpy - sqOffset, 0.0, 1.0,	// vert BL - index 1
+		cpx + sqOffset, cpy - sqOffset,	1.0, 1.0,	// vert BR - index 2
+		cpx + sqOffset, cpy + sqOffset,	1.0, 0.0,	// vert TR - index 3
 	}
 
 	indices := []uint32{
@@ -98,7 +107,7 @@ func main() {
 	ib := indexBuffer.New(indices, len(indices))
 	defer ib.Close()
 
-	proj := glm.Ortho(-1.0, 1.0, -0.75, 0.75, -1.0, 1.0)
+	proj := glm.Ortho(1.0, float32(width), 1.0, float32(height), -1.0, 1.0)
 
 	shader := shader.New("basic.shader")
 	defer shader.Close()
