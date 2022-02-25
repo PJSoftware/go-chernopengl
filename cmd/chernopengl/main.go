@@ -16,6 +16,7 @@ import (
 	"github.com/PJSoftware/go-chernopengl/pkg/vertexArray"
 	"github.com/PJSoftware/go-chernopengl/pkg/vertexBuffer"
 	"github.com/PJSoftware/go-chernopengl/pkg/vertexBufferLayout"
+	"github.com/engoengine/glm"
 	"github.com/go-gl/gl/v4.1-core/gl"
 	"github.com/go-gl/glfw/v3.3/glfw"
 )
@@ -97,15 +98,20 @@ func main() {
 	ib := indexBuffer.New(indices, len(indices))
 	defer ib.Close()
 
+	proj := glm.Ortho(-1.0, 1.0, -0.75, 0.75, -1.0, 1.0)
+
 	shader := shader.New("basic.shader")
 	defer shader.Close()
 	
-	tx := texture.New("mimp.jpg")
+	tx := texture.New("mimp_transparent.png")
 	
 	var txSlot int32 = 0
 	tx.Bind(txSlot)
 	uniform_texture := shaderUniform.New(shader, "u_Texture")
 	uniform_texture.SetUniform1i(txSlot)
+	
+	uniform_mvp := shaderUniform.New(shader, "u_MVP")
+	uniform_mvp.SetUniformMat4f(proj)
 
 	for !window.ShouldClose() {
 
