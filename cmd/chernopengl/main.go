@@ -108,7 +108,11 @@ func main() {
 	defer ib.Close()
 
 	proj := glm.Ortho(1.0, float32(width), 1.0, float32(height), -1.0, 1.0)
-
+	view := glm.Translate3D(-100.0, 0.0, 0.0)
+	model := glm.Translate3D(100.0, 100.0, 0.0)
+	mv := proj.Mul4(&view)
+	mvp := mv.Mul4(&model)
+	
 	shader := shader.New("basic.shader")
 	defer shader.Close()
 	
@@ -120,7 +124,7 @@ func main() {
 	uniform_texture.SetUniform1i(txSlot)
 	
 	uniform_mvp := shaderUniform.New(shader, "u_MVP")
-	uniform_mvp.SetUniformMatrix4fv(proj)
+	uniform_mvp.SetUniformMatrix4fv(mvp)
 
 	for !window.ShouldClose() {
 
