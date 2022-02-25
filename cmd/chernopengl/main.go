@@ -60,7 +60,7 @@ func main() {
 	glfw.WindowHint(glfw.ContextVersionMinor, 3)
 	glfw.WindowHint(glfw.OpenGLProfile, glfw.OpenGLCoreProfile)
 
-	window, err := glfw.CreateWindow(width, height, "Draw a Square: Abstracting", nil, nil)
+	window, err := glfw.CreateWindow(width, height, "Draw a Square: Projection Matrix", nil, nil)
 	if err != nil {
 		panic(err)
 	}
