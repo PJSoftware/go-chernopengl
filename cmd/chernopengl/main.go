@@ -103,7 +103,7 @@ func main() {
 	shader := shader.New("basic.shader")
 	defer shader.Close()
 	
-	tx := texture.New("mimp_transparent.png")
+	tx := texture.New("mimp.png")
 	
 	var txSlot int32 = 0
 	tx.Bind(txSlot)
